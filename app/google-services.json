@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "877653758309",
+    "project_id": "sesionrol",
+    "storage_bucket": "sesionrol.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877653758309:android:1727f4ac701bde2446918c",
+        "android_client_info": {
+          "package_name": "com.example.proyecto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877653758309-8ravhf81os13edmhmqrp88bbe9tgo1fp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyrgIwV5oLtUq2VW0VlBrdDzUReAK_Iws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877653758309-8ravhf81os13edmhmqrp88bbe9tgo1fp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877653758309:android:5e42ee4f4d68e9d046918c",
+        "android_client_info": {
+          "package_name": "es.upm.sesionrol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877653758309-8ravhf81os13edmhmqrp88bbe9tgo1fp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyrgIwV5oLtUq2VW0VlBrdDzUReAK_Iws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877653758309-8ravhf81os13edmhmqrp88bbe9tgo1fp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
