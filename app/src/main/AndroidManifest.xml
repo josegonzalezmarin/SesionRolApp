@@ -23,6 +23,12 @@
         <activity
             android:name=".Registro">
         </activity>
+        <activity
+            android:name=".MainHub">
+        </activity>
+        <activity
+            android:name=".CreateCampaign">
+        </activity>
     </application>
 
 </manifest>
