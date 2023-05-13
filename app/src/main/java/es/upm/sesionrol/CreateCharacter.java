@@ -15,43 +15,43 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class CreateCampaign  extends AppCompatActivity {
-    private DrawerLayout cCampaign;
+public class CreateCharacter  extends AppCompatActivity {
+    private DrawerLayout cCharacter;
     private MenuItem crearcampana;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_campaign);
-        cCampaign = findViewById(R.id.createcampaign);
+        setContentView(R.layout.create_character);
+        cCharacter = findViewById(R.id.createcharacter);
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navigation_view = findViewById(R.id.navigation_view);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null) actionBar.setDisplayHomeAsUpEnabled(true);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,cCampaign,toolbar,R.string.open,R.string.close){
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,cCharacter,toolbar,R.string.open,R.string.close){
             @Override
             public void onDrawerClosed(View drawerView){
                 MenuItem item = navigation_view.getCheckedItem();
-                if(item!=null) cambiar_pantalla(item.getItemId());
+                if(item!=null) switchLayout(item.getItemId());
             }
 
         };
         toggle.setDrawerIndicatorEnabled(true);
-        cCampaign.addDrawerListener(toggle);
+        cCharacter.addDrawerListener(toggle);
         toggle.syncState();
 
         navigation_view.setNavigationItemSelectedListener(item -> {
             navigation_view.setCheckedItem(item);
-            cCampaign.closeDrawer(GravityCompat.START);
+            cCharacter.closeDrawer(GravityCompat.START);
             return false;
         });
     }
     public void OnBackPressed(){
-        if(cCampaign.isDrawerOpen(GravityCompat.START)) cCampaign.openDrawer(GravityCompat.END);
+        if(cCharacter.isDrawerOpen(GravityCompat.START)) cCharacter.openDrawer(GravityCompat.END);
         else super.onBackPressed();
     }
 
 
-    public void cambiar_pantalla(int id_item){
+    public void switchLayout(int id_item){
         Intent cambio;
         if(id_item==R.id.principal){
             cambio = new Intent(findViewById(R.id.principal).getContext(), MainHub.class);

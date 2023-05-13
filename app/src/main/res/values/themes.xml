@@ -14,4 +14,9 @@
         <!-- Customize your theme here. -->
         <!--<item name="android:colorBackground">@color/black</item>-->
     </style>
+    <style name="EditTextWithBorder">
+        <item name="android:background">@drawable/edittext_border</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
 </resources>
