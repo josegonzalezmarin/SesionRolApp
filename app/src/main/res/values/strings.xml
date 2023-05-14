@@ -6,4 +6,79 @@
     <string name="imagen_de_perfil">Imagen de Perfil</string>
     <string name="hint_name">Name</string>
     <string name="raza">Raza</string>
+    <string-array name="dnd_races">
+        <item>Selecciona Raza</item>
+        <item>Enano</item>
+        <item>Elfo</item>
+        <item>Halfling</item>
+        <item>Humano</item>
+        <item>Draconido</item>
+        <item>Gnomo</item>
+        <item>Semielfo</item>
+        <item>Semiorco</item>
+        <item>Tiefling</item>
+        <item>Mediano</item>
+        <item>Goliath</item>
+        <item>Tritón</item>
+        <item>Aasimar</item>
+        <item>Tabaxi</item>
+        <item>Firbolg</item>
+        <item>Genasi</item>
+        <item>Halfelin</item>
+        <item>Elfo oscuro</item>
+    </string-array>
+    <string-array name="dnd_classes">
+        <item>Selecciona Clase</item>
+        <item>Bárbaro</item>
+        <item>Bardo</item>
+        <item>Clérigo</item>
+        <item>Druida</item>
+        <item>Explorador</item>
+        <item>Guerrero</item>
+        <item>Hechicero</item>
+        <item>Mago</item>
+        <item>Monje</item>
+        <item>Paladín</item>
+        <item>Pícaro</item>
+        <item>Brujo</item>
+    </string-array>
+        <string-array name="dnd_aligment">
+            <item>Selecciona alineamiento</item>
+            <item>Legal Bueno</item>
+            <item>Legal Neutral</item>
+            <item>Legal Malvado</item>
+            <item>Neutral Bueno</item>
+            <item>Neutral</item>
+            <item>Neutral Malvado</item>
+            <item>Caótico Bueno</item>
+            <item>Caótico Neutral</item>
+            <item>Caótico Malvado</item>
+        </string-array>
+    <string-array name="dnd_background">
+        <item>Selecciona trasfondo</item>
+        <item>Acólito</item>
+        <item>Artesano de gremio</item>
+        <item>Criminal</item>
+        <item>Erudito</item>
+        <item>Explorador</item>
+        <item>Heroe del pueblo</item>
+        <item>Mercader</item>
+        <item>Noble</item>
+        <item>Forastero</item>
+        <item>Huerfano</item>
+    </string-array>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </resources>

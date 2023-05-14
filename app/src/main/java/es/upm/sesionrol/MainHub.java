@@ -64,7 +64,7 @@ public class MainHub extends AppCompatActivity {
             startActivity(cambio);
         }
         else if(id_item==R.id.crear_personaje){
-            cambio= new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCampaign.class);
+            cambio= new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
         }
         else if(id_item==R.id.cerrar_sesion){
@@ -72,7 +72,7 @@ public class MainHub extends AppCompatActivity {
             startActivity(cambio);
         }
         else if(id_item==R.id.editar_personaje){
-            cambio= new Intent(findViewById(R.id.editar_personaje).getContext(), CreateCampaign.class);
+            cambio= new Intent(findViewById(R.id.editar_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
         }
         else{

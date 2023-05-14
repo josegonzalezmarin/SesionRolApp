@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
@@ -17,11 +21,13 @@ import com.google.android.material.navigation.NavigationView;
 
 public class CreateCharacter  extends AppCompatActivity {
     private DrawerLayout cCharacter;
+    Spinner raceSpinner;
     private MenuItem crearcampana;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_character);
         cCharacter = findViewById(R.id.createcharacter);
+        raceSpinner = findViewById(R.id.race_spinner);
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navigation_view = findViewById(R.id.navigation_view);
         setSupportActionBar(toolbar);
@@ -43,6 +49,19 @@ public class CreateCharacter  extends AppCompatActivity {
             navigation_view.setCheckedItem(item);
             cCharacter.closeDrawer(GravityCompat.START);
             return false;
+        });
+
+        raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                String selectedRace = parent.getItemAtPosition(pos).toString();
+                //TODO
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO
+            }
         });
     }
     public void OnBackPressed(){

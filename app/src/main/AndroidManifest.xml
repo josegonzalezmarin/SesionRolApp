@@ -29,6 +29,9 @@
         <activity
             android:name=".CreateCampaign">
         </activity>
+        <activity
+            android:name=".CreateCharacter">
+        </activity>
     </application>
 
 </manifest>
