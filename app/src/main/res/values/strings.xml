@@ -2,4 +2,8 @@
     <string name="app_name">SesionRol</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="nombre">Nombre</string>
+    <string name="imagen_de_perfil">Imagen de Perfil</string>
+    <string name="hint_name">Name</string>
+    <string name="raza">Raza</string>
 </resources>

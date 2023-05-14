@@ -25,7 +25,8 @@
         android:src="@drawable/baseline_person_24"
         android:background="@color/gris_letras"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/imagen_de_perfil" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
             android:id="@+id/nameTxt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="@string/nombre"
             android:layout_weight="1"/>
         <EditText
             android:id="@+id/insertNametxt"
@@ -44,8 +45,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
-            android:layout_weight="3"/>
+            android:hint="@string/hint_name"
+            android:layout_weight="3"
+            android:importantForAutofill="no" />
     </LinearLayout>
 
         <LinearLayout
@@ -58,7 +60,7 @@
                 android:id="@+id/razeTxt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Raza"
+                android:text="@string/raza"
                 android:layout_weight="1"/>
             <EditText
                 android:id="@+id/insertRaze"
@@ -66,8 +68,9 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
-                android:layout_weight="3"/>
+                android:hint="Enano"
+                android:layout_weight="3"
+                android:importantForAutofill="no" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,14 +105,16 @@
                 android:layout_height="wrap_content"
                 android:text="Nivel"
                 android:layout_weight="1"/>
+
             <EditText
                 android:id="@+id/insertLevel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="3"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
-                android:layout_weight="3"/>
+                android:minHeight="48dp"
+                android:text="Name" />
             <TextView
                 android:id="@+id/expPointsTxt"
                 android:layout_width="0dp"
@@ -227,14 +232,16 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
                     android:src="@drawable/atributos" />
+
                 <EditText
-                android:id="@+id/dexTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:background="@android:color/transparent"
-                android:gravity="center"
-                android:text="0"/>
+                    android:id="@+id/dexTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:text="0" />
 
                 <EditText
                     android:id="@+id/dexAtStr"
@@ -758,9 +765,709 @@
                 android:textStyle="bold"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imgpergt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="2dp"
+                android:src="@drawable/pergamino_tumbao" />
+
+            <TextView
+                android:id="@+id/marcStr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="121dp"
+                android:layout_marginTop="31dp"
+                android:text="Fuerza"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/marcInt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="238dp"
+                android:layout_marginTop="31dp"
+                android:text="Inteligencia"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/marcWisd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="238dp"
+                android:layout_marginTop="85dp"
+                android:text="Sabiduria"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/marcChar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="238dp"
+                android:layout_marginTop="144dp"
+                android:text="Carisma"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/marcDex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="121dp"
+                android:layout_marginTop="86dp"
+                android:text="Destreza"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tirSalv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="143dp"
+                android:layout_marginBottom="24dp"
+                android:text="Tiradas de Salvacion"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/marcConst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="121dp"
+                android:layout_marginTop="144dp"
+                android:text="Constitucion"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/strCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="95dp"
+                android:layout_marginTop="31dp"
+                android:button="@drawable/checkbox_circular" />
+
+            <CheckBox
+                android:id="@+id/intCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="214dp"
+                android:layout_marginTop="31dp"
+                android:button="@drawable/checkbox_circular" />
+
+            <CheckBox
+                android:id="@+id/wisdCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="214dp"
+                android:layout_marginTop="86dp"
+                android:button="@drawable/checkbox_circular" />
+
+            <CheckBox
+                android:id="@+id/constCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="95dp"
+                android:layout_marginTop="144dp"
+                android:button="@drawable/checkbox_circular" />
+
+            <CheckBox
+                android:id="@+id/charCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="214dp"
+                android:layout_marginTop="144dp"
+                android:button="@drawable/checkbox_circular" />
+
+            <CheckBox
+                android:id="@+id/dexCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="95dp"
+                android:layout_marginTop="86dp"
+                android:button="@drawable/checkbox_circular" />
+        </RelativeLayout>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="700dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/pergaminopie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="1dp"
+                    android:src="@drawable/pergaminopie" />
 
 
+                <TextView
+                    android:id="@+id/acrobTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="64dp"
+                    android:text="Acrobacias"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/atletTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="94dp"
+                    android:text="Atletismo"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/atletismCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="94dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <CheckBox
+                    android:id="@+id/arcanaCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="124dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <TextView
+                    android:id="@+id/arcaneTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="124dp"
+                    android:text="Conoc. Arcano"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/decepTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="154dp"
+                    android:text="Engaño"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/deceptCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="154dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <CheckBox
+                    android:id="@+id/historyCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="184dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <TextView
+                    android:id="@+id/histTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="184dp"
+                    android:text="Historia"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/perfTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="214dp"
+                    android:text="Interpretación"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/performanceCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="214dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <CheckBox
+                    android:id="@+id/intimidCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="244dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <TextView
+                    android:id="@+id/intimidTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="244dp"
+                    android:text="Intimidación"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/investTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="274dp"
+                    android:text="Investigación"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/investCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="274dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <CheckBox
+                    android:id="@+id/sohandCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="304dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <TextView
+                    android:id="@+id/sohandTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="304dp"
+                    android:text="Juego de Manos"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/medicTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="334dp"
+                    android:text="Medicina"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/medicCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="334dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <CheckBox
+                    android:id="@+id/natureCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="364dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <TextView
+                    android:id="@+id/natureTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="364dp"
+                    android:text="Naturaleza"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/percepTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="394dp"
+                    android:text="Percepción"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/perceptCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="394dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <TextView
+                    android:id="@+id/insigtTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="424dp"
+                    android:text="Perspicacia"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/insigthCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="424dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <TextView
+                    android:id="@+id/persuasTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="454dp"
+                    android:text="Persuasión"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/persuasCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="454dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <CheckBox
+                    android:id="@+id/religCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="484dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <TextView
+                    android:id="@+id/religTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="484dp"
+                    android:text="Religión"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/stealthTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="514dp"
+                    android:text="Sigilo"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/stealthCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="514dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <CheckBox
+                    android:id="@+id/surviveCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="544dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <TextView
+                    android:id="@+id/surviveTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="544dp"
+                    android:text="Supervivencia"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/aHandlindTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="183dp"
+                    android:layout_marginTop="574dp"
+                    android:text="Trat con Animales"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/aHadlingCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="574dp"
+                    android:button="@drawable/checkbox_circular" />
+
+                <CheckBox
+                    android:id="@+id/acrobatCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="149dp"
+                    android:layout_marginTop="64dp"
+                    android:button="@drawable/checkbox_circular" />
+
+
+                <TextView
+                    android:id="@+id/skillsTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="171dp"
+                    android:layout_marginBottom="34dp"
+                    android:text="HABILIDADES"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/imgarmas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:src="@drawable/armas" />
+
+                <TextView
+                    android:id="@+id/weapTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="66dp"
+                    android:layout_marginTop="64dp"
+                    android:text="Nombre"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/bonifTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="163dp"
+                    android:layout_marginTop="64dp"
+                    android:text="Bonificador"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/damagTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="272dp"
+                    android:layout_marginTop="64dp"
+                    android:text="Daño/Tipo"
+                    android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginHorizontal="50dp">
+                    <EditText
+                        android:id="@+id/weapName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_weight="1"/>
+                    <EditText
+                        android:id="@+id/weapBonus"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_weight="1"/>
+                    <EditText
+                        android:id="@+id/weapDmg"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="200dp"
+                    android:layout_marginHorizontal="50dp">
+
+                <EditText
+                        android:id="@+id/weapName2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_weight="1"/>
+                    <EditText
+                        android:id="@+id/weapBonus2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_weight="1"/>
+                    <EditText
+                        android:id="@+id/weapDmg2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="150dp"
+                    android:layout_marginHorizontal="50dp">
+                    <EditText
+                        android:id="@+id/weapName3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_weight="1"/>
+                    <EditText
+                        android:id="@+id/weapBonus3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_weight="1"/>
+                    <EditText
+                        android:id="@+id/weapDmg3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+            </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+            <EditText
+                android:id="@+id/equipo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_background"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/saveC"
