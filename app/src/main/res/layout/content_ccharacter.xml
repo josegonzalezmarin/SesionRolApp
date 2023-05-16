@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:background="@color/gris_letras"
-            android:contentDescription="@string/imagen_de_perfil"
+            android:contentDescription="@string/prof_img"
             android:orientation="vertical"
             android:src="@drawable/baseline_person_24"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/nombre" />
+                android:text="@string/name" />
 
             <EditText
                 android:id="@+id/insertNametxt"
@@ -62,7 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/raza" />
+                android:text="@string/race" />
 
             <Spinner android:id="@+id/race_spinner"
                 android:layout_width="0dp"
@@ -248,9 +248,8 @@
                     android:layout_centerInParent="true"
                     android:background="@android:color/transparent"
                     android:gravity="center"
-                    android:minHeight="48dp"
-                    android:text="0"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:text="0" />
 
                 <EditText
                     android:id="@+id/dexAtStr"
@@ -284,8 +283,8 @@
                     android:layout_centerInParent="true"
                     android:background="@android:color/transparent"
                     android:gravity="center"
-                    android:text="0"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:text="0" />
 
                 <EditText
                     android:id="@+id/constAtStr"

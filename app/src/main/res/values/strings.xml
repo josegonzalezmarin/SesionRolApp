@@ -2,10 +2,12 @@
     <string name="app_name">SesionRol</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="nombre">Nombre</string>
-    <string name="imagen_de_perfil">Imagen de Perfil</string>
+    <string name="name">Nombre</string>
+    <string name="name_camp">Nombre Campaña</string>
+    <string name="prof_img">Imagen de Perfil</string>
+    <string name="camp_img">Imagen de Campaña</string>
     <string name="hint_name">Name</string>
-    <string name="raza">Raza</string>
+    <string name="race">Raza</string>
     <string-array name="dnd_races">
         <item>Selecciona Raza</item>
         <item>Enano</item>

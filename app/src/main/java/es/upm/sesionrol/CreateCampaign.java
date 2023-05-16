@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -17,11 +19,13 @@ import com.google.android.material.navigation.NavigationView;
 
 public class CreateCampaign  extends AppCompatActivity {
     private DrawerLayout cCampaign;
-    private MenuItem crearcampana;
+
+    private Button newHero;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_campaign);
         cCampaign = findViewById(R.id.createcampaign);
+        newHero = findViewById(R.id.newhero);
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navigation_view = findViewById(R.id.navigation_view);
         setSupportActionBar(toolbar);
@@ -44,6 +48,16 @@ public class CreateCampaign  extends AppCompatActivity {
             cCampaign.closeDrawer(GravityCompat.START);
             return false;
         });
+
+        /*newHero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LinearLayout dinamico = new LinearLayout(this);
+                dinamico.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+            }
+        });*/
     }
     public void OnBackPressed(){
         if(cCampaign.isDrawerOpen(GravityCompat.START)) cCampaign.openDrawer(GravityCompat.END);
