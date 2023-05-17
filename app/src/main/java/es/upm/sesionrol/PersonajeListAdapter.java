@@ -52,7 +52,6 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
         super(context, 0, listaPersonajes);
         this.context = context;
         this.listaPersonajes = listaPersonajes;
-        //inflater = LayoutInflater.from(context);
     }
     @NonNull
     @Override
@@ -68,13 +67,18 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
         TextView tvLvl = convertView.findViewById(R.id.lvlView);
 
         PersonajeEntity personaje = listaPersonajes.get(position);
-        tvName.setText(personaje.getDndclass());
+        tvName.setText(personaje.getName());
         tvClass.setText(personaje.getDndclass());
         tvRace.setText(personaje.getRace());
         tvExp.setText(personaje.getExp()+"");
         tvLvl.setText(personaje.getLvl()+"");
 
         return convertView;
+    }
+
+    @Override
+    public int getCount() {
+        return listaPersonajes.size();
     }
 
     /*

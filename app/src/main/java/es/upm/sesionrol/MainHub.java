@@ -1,6 +1,7 @@
 package es.upm.sesionrol;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +30,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -61,7 +64,37 @@ public class MainHub extends AppCompatActivity {
 
         cargarDatosDesdeFirestore();
 
+        /*db.collection("personajes").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w("FirestoreListener", "Error al escuchar cambios", error);
+                    return;
+                }
+                if (value != null && !value.isEmpty()) {
+                    // Se han actualizado los documentos en la colección, puedes procesar los nuevos datos aquí
+                    personajes = value.toObjects(PersonajeEntity.class);
+                    // Realiza las acciones necesarias con la lista de personajes actualizada
 
+
+
+                    // Por ejemplo, si estás usando ListView:
+
+                    Log.d("Lista nosesivacia",personajes.size()+"");
+                    persAdapter.addAll(personajes);
+                    persAdapter.notifyDataSetChanged();
+                    PersonajeListAdapter personajeAdapter = new PersonajeListAdapter(MainHub.this, personajes);
+                    listView.setAdapter(personajeAdapter);
+                }
+            }
+
+        });
+*/
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         persAdapter = new PersonajeListAdapter(this,personajes);
         listView.setAdapter(persAdapter);
 

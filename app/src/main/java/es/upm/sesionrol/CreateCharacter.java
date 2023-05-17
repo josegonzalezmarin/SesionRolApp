@@ -112,12 +112,14 @@ public class CreateCharacter  extends AppCompatActivity {
                 String wisds = wisd.getText().toString();
                 EditText charism = findViewById(R.id.charTxt);
                 String chars = charism.getText().toString();
+                EditText exp = findViewById(R.id.insertExpPoints);
+                String exper = exp.getText().toString();
 
-                Log.d("DigameUSteDonded",lvls + strs + dexs +conss+ints+names);
-                if(names.isEmpty()||lvls==""||strs==""||dexs==""||conss==""||ints==""||wisds==""||chars=="")
+                Log.d("DigameUSteDonded",lvls + exper+strs + dexs +conss+ints+names);
+                if(names.isEmpty()||lvls==""||exper==""||strs==""||dexs==""||conss==""||ints==""||wisds==""||chars=="")
                     Toast.makeText(CreateCharacter.this, "Campos obligatorios sin rellenar", Toast.LENGTH_SHORT).show();
                 else {
-                    EditText exp = findViewById(R.id.insertExpPoints);
+
                     EditText comp = findViewById(R.id.comptxt);
                     EditText bond = findViewById(R.id.bondtxt);
                     EditText equip = findViewById(R.id.equipmentxt);
@@ -127,16 +129,17 @@ public class CreateCharacter  extends AppCompatActivity {
                     EditText pers = findViewById(R.id.perstxt);
 
 
+
                     Map<String, Object> personajeData = new HashMap<>();
                     personajeData.put("name", names);
                     personajeData.put("lvl", Integer.valueOf(lvls));
                     personajeData.put("dndclass", classSpinner.getSelectedItem().toString());
                     personajeData.put("race", raceSpinner.getSelectedItem().toString());
-                    personajeData.put("exp", Integer.valueOf(exp.getText().toString()));
+                    personajeData.put("exp", exper);
                     personajeData.put("aligm", aligmSpinner.getSelectedItem().toString());
                     personajeData.put("backg", backgSpinner.getSelectedItem().toString());
                     personajeData.put("str", Integer.valueOf(strs));
-                    personajeData.put("dex", Integer.valueOf(strs));
+                    personajeData.put("dex", Integer.valueOf(dexs));
                     personajeData.put("constit", Integer.valueOf(conss));
                     personajeData.put("intel", Integer.valueOf(ints));
                     personajeData.put("wisd", Integer.valueOf(wisds));
