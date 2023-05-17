@@ -2,49 +2,60 @@ package es.upm.sesionrol;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = PersonajeEntity.TABLA)
-public class PersonajeEntity {
+public class PersonajeEntity implements Serializable {
     static public final String TABLA = "personaje";
 
     @PrimaryKey(autoGenerate = true)
-    protected int pid;
+    private int pid;
 
-    protected String name;
+    private String name;
 
-    protected String race;
+    private String race;
 
-    protected String dndclass;
+    private String dndclass;
 
-    protected int lvl;
-    protected int exp;
+    private int lvl;
+    private int exp;
 
 
 
-    protected String aligm;
-    protected String backg;
+    private String aligm;
+    private String backg;
 
-    protected int str;
-    protected int dex;
-    protected int constit;
-    protected int intel;
-    protected int wisd;
-    protected int charism;
-    protected String competences;
-    protected String equipment;
-    protected String ideal;
-    protected String bond;
-    protected String feature;
-    protected String personality;
-    protected String flaws;
+    private int str;
+    private int dex;
+    private int constit;
+    private int intel;
+    private int wisd;
+    private int charism;
+    private String competences;
+    private String equipment;
+    private String ideal;
+    private String bond;
+    private String feature;
+    private String personality;
+    private String flaws;
 
-    //protected int money[];
+    //private int money[];
 
+    public PersonajeEntity(){
+
+    }
     public PersonajeEntity(String name, String race, String dndclass, int lvl, int str, int dex, int constit, int intel, int wisd, int charism) {
         this.name = name;
         this.race = race;
         this.dndclass = dndclass;
         //money =new int[5];
-        lvl= str= dex= constit= intel= wisd= charism =0;
+        this.lvl=lvl;
+        this.str=str;
+        this.dex=dex;
+        this.constit=constit;
+        this.intel=intel;
+        this.wisd=wisd;
+        this.charism =charism;
     }
 
     public int getPid() {

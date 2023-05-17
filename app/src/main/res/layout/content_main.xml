@@ -8,14 +8,48 @@
     tools:showIn="@layout/main_hub"
     android:id="@+id/content_main"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
-        <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    </LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvFirebaseC"
+                    android:text="Coleccion de Campañas Creadas"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <ListView
+                    android:id="@+id/listadoFirebaseC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
+            </LinearLayout>
+            <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvFirebase"
+                    android:text="Coleccion de Personajes Creados"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <ListView
+                    android:id="@+id/listadoFirebase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

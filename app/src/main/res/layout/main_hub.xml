@@ -13,6 +13,7 @@
 
         <include layout="@layout/content_main"/>
 
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <include layout="@layout/navigation_view"/>

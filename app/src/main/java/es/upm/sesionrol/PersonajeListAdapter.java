@@ -1,82 +1,99 @@
 package es.upm.sesionrol;
 
 import android.content.Context;
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.Nullable;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import es.upm.sesionrol.PersonajeEntity;
+import es.upm.sesionrol.R;
+
+public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
 
 
-public class PersonajeListAdapter extends RecyclerView.Adapter<PersonajeListAdapter.PersonajeViewHolder> {
 
-    private List<PersonajeEntity> itemsList;
+    private Context context;
+    private List<PersonajeEntity> listaPersonajes;
+    private LayoutInflater inflater;
+    private DatabaseReference databaseReference;
+    private ChildEventListener pChildEventListener;
+
+    // variable for Text view.
+    private TextView retrieveTV;
+    ListView lvListadoFirebase;
+    List<PersonajeEntity> lRow;
 
 
-    public class PersonajeViewHolder extends RecyclerView.ViewHolder {
-        private final TextView name;
-        private final TextView race;
-        private final TextView dndclass;
-        private final TextView lvl;
-        private final TextView exp;
-
-        private PersonajeViewHolder(View itemView) {
-            super(itemView);
-            name = itemView.findViewById(R.id.nameView);
-            race = itemView.findViewById(R.id.raceView);
-            dndclass = itemView.findViewById(R.id.classView);
-            lvl = itemView.findViewById(R.id.lvlView);
-            exp = itemView.findViewById(R.id.expView);
-
-        }
+    public PersonajeListAdapter(Context context, List<PersonajeEntity> listaPersonajes) {
+        super(context, 0, listaPersonajes);
+        this.context = context;
+        this.listaPersonajes = listaPersonajes;
+        //inflater = LayoutInflater.from(context);
     }
-
-
-
-
-
-
-
     @NonNull
     @Override
-    public PersonajeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.character_summary, parent, false);
-        return new PersonajeViewHolder(itemView);
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.character_summary, parent, false);
+        }
+
+        TextView tvName = convertView.findViewById(R.id.nameView);
+        TextView tvClass = convertView.findViewById(R.id.classView);
+        TextView tvRace = convertView.findViewById(R.id.raceView);
+        TextView tvExp = convertView.findViewById(R.id.expView);
+        TextView tvLvl = convertView.findViewById(R.id.lvlView);
+
+        PersonajeEntity personaje = listaPersonajes.get(position);
+        tvName.setText(personaje.getDndclass());
+        tvClass.setText(personaje.getDndclass());
+        tvRace.setText(personaje.getRace());
+        tvExp.setText(personaje.getExp()+"");
+        tvLvl.setText(personaje.getLvl()+"");
+
+        return convertView;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull PersonajeViewHolder holder, int pos) {
-            PersonajeEntity current = itemsList.get(pos);
-            holder.name.setText(current.getName());
-            holder.race.setText(current.getRace());
-            holder.dndclass.setText(current.getDndclass());
-            holder.lvl.setText(current.getLvl());
-            holder.exp.setText(current.getExp());
-    }
+    /*
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View itemView = convertView;
+        if (itemView == null) {
+            itemView = inflater.inflate(R.layout.character_summary, parent, false);
+        }
 
-    public void setItems(List<PersonajeEntity> userList){
-        this.itemsList = userList;
-        notifyDataSetChanged();
-    }
+        PersonajeEntity personaje = getItem(position);
 
-    /**
-     * Returns the total number of items in the data set held by the adapter.
-     *
-     * @return The total number of items in this adapter.
-     */
-    @Override
-    public int getItemCount() {
-        return (itemsList == null)
-                ? 0
-                : itemsList.size();
-    }
+        TextView nombreTextView = itemView.findViewById(R.id.nameView);
+        TextView nivelTextView = itemView.findViewById(R.id.lvlView);
+        TextView claseTextView = itemView.findViewById(R.id.classView);
 
-    public PersonajeEntity getGrupoAtPosition (int position) {
-        return itemsList.get(position);
-    }
+        nombreTextView.setText(personaje.getName());
+        nivelTextView.setText(String.valueOf(personaje.getLvl()));
+        claseTextView.setText(personaje.getDndclass());
+
+        return itemView;
+    }*/
 }
-

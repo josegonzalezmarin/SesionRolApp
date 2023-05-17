@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +22,22 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CreateCharacter  extends AppCompatActivity {
     private DrawerLayout cCharacter;
@@ -33,12 +46,24 @@ public class CreateCharacter  extends AppCompatActivity {
     Spinner aligmSpinner;
     Spinner backgSpinner;
     private MenuItem crearcampana;
-    private DatabaseReference db;
+    private ListView listView;
+    private PersonajeListAdapter personajeAdapter;
+    private List<PersonajeEntity> listaPersonajes;
+
+    private FirebaseFirestore db;
+    private CollectionReference personajesRef;
     private Button savebt;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseApp.initializeApp(this);
+
+
+        db = FirebaseFirestore.getInstance();
+
+
         setContentView(R.layout.create_character);
+
+
+
         cCharacter = findViewById(R.id.createcharacter);
         raceSpinner = findViewById(R.id.race_spinner);
         classSpinner = findViewById(R.id.class_spinner);
@@ -92,42 +117,52 @@ public class CreateCharacter  extends AppCompatActivity {
                 if(names.isEmpty()||lvls==""||strs==""||dexs==""||conss==""||ints==""||wisds==""||chars=="")
                     Toast.makeText(CreateCharacter.this, "Campos obligatorios sin rellenar", Toast.LENGTH_SHORT).show();
                 else {
-                    PersonajeEntity p = new PersonajeEntity(
-                            names,raceSpinner.getSelectedItem().toString(),
-                            classSpinner.getSelectedItem().toString(),
-                            Integer.valueOf(lvls),
-                            Integer.valueOf(strs),
-                            Integer.valueOf(dexs),
-                            Integer.valueOf(conss),
-                            Integer.valueOf(ints),
-                            Integer.valueOf(wisds),
-                            Integer.valueOf(chars));
+                    EditText exp = findViewById(R.id.insertExpPoints);
+                    EditText comp = findViewById(R.id.comptxt);
+                    EditText bond = findViewById(R.id.bondtxt);
+                    EditText equip = findViewById(R.id.equipmentxt);
+                    EditText feat = findViewById(R.id.featuretxt);
+                    EditText flaw = findViewById(R.id.flawstxt);
+                    EditText ideal = findViewById(R.id.idealtxt);
+                    EditText pers = findViewById(R.id.perstxt);
 
-                    EditText exp = findViewById(R.id.strTxt);
-                    EditText comp = findViewById(R.id.dexTxt);
-                    EditText bond = findViewById(R.id.constTxt);
-                    EditText equip = findViewById(R.id.intTxt);
-                    EditText feat = findViewById(R.id.sabTxt);
-                    EditText flaw = findViewById(R.id.charTxt);
-                    EditText ideal = findViewById(R.id.insertNametxt);
-                    EditText pers = findViewById(R.id.insertLevel);
-                    p.setAligm(aligmSpinner.getSelectedItem().toString());
-                    p.setBackg(backgSpinner.getSelectedItem().toString());
-                    p.setExp(Integer.valueOf(exp.getText().toString()));
-                    p.setCompetences(comp.getText().toString());
-                    p.setBond(bond.getText().toString());
-                    p.setEquipment(equip.getText().toString());
-                    p.setFeature(feat.getText().toString());
-                    p.setFlaws(flaw.getText().toString());
-                    p.setIdeal(ideal.getText().toString());
-                    p.setPersonality(pers.getText().toString());
-                    db = FirebaseDatabase.getInstance().getReference();
 
-                    DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("personaje");
-                    String key = "id"+names+raceSpinner.getSelectedItem().toString()+classSpinner.getSelectedItem().toString();
+                    Map<String, Object> personajeData = new HashMap<>();
+                    personajeData.put("name", names);
+                    personajeData.put("lvl", Integer.valueOf(lvls));
+                    personajeData.put("dndclass", classSpinner.getSelectedItem().toString());
+                    personajeData.put("race", raceSpinner.getSelectedItem().toString());
+                    personajeData.put("exp", Integer.valueOf(exp.getText().toString()));
+                    personajeData.put("aligm", aligmSpinner.getSelectedItem().toString());
+                    personajeData.put("backg", backgSpinner.getSelectedItem().toString());
+                    personajeData.put("str", Integer.valueOf(strs));
+                    personajeData.put("dex", Integer.valueOf(strs));
+                    personajeData.put("constit", Integer.valueOf(conss));
+                    personajeData.put("intel", Integer.valueOf(ints));
+                    personajeData.put("wisd", Integer.valueOf(wisds));
+                    personajeData.put("charism", Integer.valueOf(chars));
+                    personajeData.put("competences", comp.getText().toString());
+                    personajeData.put("equipment", equip.getText().toString());
+                    personajeData.put("ideal", ideal.getText().toString());
+                    personajeData.put("bond", bond.getText().toString());
+                    personajeData.put("feature", feat.getText().toString());
+                    personajeData.put("personality", pers.getText().toString());
+                    personajeData.put("flaws", flaw.getText().toString());
 
-                    db.child("personaje").child(key).setValue(p);
-                    Log.d("DigameUSteDonded","Efectivamente paso por aqui");
+
+                    db = FirebaseFirestore.getInstance();
+
+                    db.collection("personaje")
+                            .add(personajeData)
+                            .addOnSuccessListener(documentReference -> {
+                                // Se guardaron los datos exitosamente
+                                String documentId = documentReference.getId();
+                                Log.d("TAG", "Documento guardado con ID: " + documentId);
+                            })
+                            .addOnFailureListener(e -> {
+                                // Ocurrió un error al guardar los datos
+                                Log.e("TAG", "Error al guardar el documento", e);
+                            });
                 }
             }
         });
@@ -187,6 +222,8 @@ public class CreateCharacter  extends AppCompatActivity {
     }
 
 
+
+
     public void switchLayout(int id_item){
         Intent cambio;
         if(id_item==R.id.principal){
@@ -201,16 +238,12 @@ public class CreateCharacter  extends AppCompatActivity {
             cambio= new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
         }
-        else if(id_item==R.id.cerrar_sesion){
-            cambio= new Intent(findViewById(R.id.crear_campana).getContext(), MainActivity.class);
-            startActivity(cambio);
-        }
         else if(id_item==R.id.editar_personaje){
             cambio= new Intent(findViewById(R.id.editar_personaje).getContext(), CreateCampaign.class);
             startActivity(cambio);
         }
         else{
-            cambio= new Intent(findViewById(R.id.ajustes).getContext(), MainActivity.class);
+            cambio= new Intent(findViewById(R.id.crear_campana).getContext(), MainActivity.class);
             startActivity(cambio);
         }
 

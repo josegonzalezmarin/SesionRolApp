@@ -34,7 +34,7 @@
                 android:id="@+id/expView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="InserteAqui"
+                android:text=""
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.223"
@@ -89,7 +89,6 @@
                 app:layout_constraintVertical_bias="0.688" />
 
             <TextView
-                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Exp."
@@ -104,7 +103,7 @@
                 android:id="@+id/nameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="InserteAqui"
+                android:text=""
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.223"
@@ -114,9 +113,9 @@
 
             <TextView
                 android:id="@+id/raceView"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="InserteAqui"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.223"
@@ -126,9 +125,9 @@
 
             <TextView
                 android:id="@+id/classView"
+                android:text="clase Ejemplo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="InserteAqui"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.223"
@@ -138,9 +137,9 @@
 
             <TextView
                 android:id="@+id/lvlView"
+                android:text=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="InserteAqui"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.706"
