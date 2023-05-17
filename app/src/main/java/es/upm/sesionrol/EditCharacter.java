@@ -177,7 +177,7 @@ public class EditCharacter  extends AppCompatActivity {
                     EditText pers = findViewById(R.id.insertLevel);
                     p.setAligm(aligmSpinner.getSelectedItem().toString());
                     p.setBackg(backgSpinner.getSelectedItem().toString());
-                    p.setExp(Integer.valueOf(exp.getText().toString()));
+                    p.setExp(exp.getText().toString());
                     p.setCompetences(comp.getText().toString());
                     p.setBond(bond.getText().toString());
                     p.setEquipment(equip.getText().toString());

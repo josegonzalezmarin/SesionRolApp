@@ -41,9 +41,6 @@ import java.util.List;
 
 public class MainHub extends AppCompatActivity {
     private DrawerLayout mainhub;
-    private MenuItem crearcampana;
-    private DatabaseReference dbref;
-    private ValueEventListener velistener;
     private ListView listView;
     private PersonajeListAdapter persAdapter;
     private List<PersonajeEntity> personajes;
@@ -129,6 +126,7 @@ public class MainHub extends AppCompatActivity {
 
 
     }
+
     public void OnBackPressed(){
         if(mainhub.isDrawerOpen(GravityCompat.START)) mainhub.openDrawer(GravityCompat.END);
         else super.onBackPressed();
@@ -157,57 +155,13 @@ public class MainHub extends AppCompatActivity {
             startActivity(cambio);
         }
         else{
-            cambio= new Intent(findViewById(R.id.crear_campana).getContext(), MainActivity.class);
+            cambio= new Intent(findViewById(R.id.activity_main).getContext(), MainActivity.class);
             startActivity(cambio);
         }
 
 
     }
-    /*public void cargarDatosDesdeFirebase(){
-        dbref = FirebaseDatabase.getInstance().getReference().child("personaje/idcEnanoGuerrero");
-        dbref.setValue("idcEnanoGuerrero");
 
-        dbref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot ds) {
-
-                for (DataSnapshot s : ds.getChildren()) {
-
-                    String aligm = s.child("aligm").getValue(String.class);
-                    String backg = s.child("backg").getValue(String.class);
-                    String bond = s.child("bond").getValue(String.class);
-                    int charism = s.child("charism").getValue(Integer.class);
-                    String competences = s.child("competences").getValue(String.class);
-                    int constit = s.child("constit").getValue(Integer.class);
-                    int dex = s.child("dex").getValue(Integer.class);
-                    String dndclass = s.child("dndclass").getValue(String.class);
-                    String equipment = s.child("equipment").getValue(String.class);
-                    int exp = s.child("exp").getValue(Integer.class);
-                    String feature = s.child("feature").getValue(String.class);
-                    String flaws = s.child("flaws").getValue(String.class);
-                    String ideal = s.child("ideal").getValue(String.class);
-                    int intel = s.child("intel").getValue(Integer.class);
-                    int lvl = s.child("lvl").getValue(Integer.class);
-                    String name = s.child("name").getValue(String.class);
-                    String personality = s.child("personality").getValue(String.class);
-                    String race = s.child("race").getValue(String.class);
-                    int str = s.child("str").getValue(Integer.class);
-                    int wisd = s.child("wisd").getValue(Integer.class);
-
-                    PersonajeEntity p = new PersonajeEntity( name,  race,  dndclass,  lvl,  str,  dex,  constit,  intel,  wisd,  charism);
-                    personajes.add(p);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Se invoca cuando se produce un error en la lectura de los datos
-                Log.e("TAG", "Error en la lectura: " + databaseError.getMessage());
-            }
-
-
-        });
-    }*/
 
     private void cargarDatosDesdeFirestore() {
         db.collection("personaje")

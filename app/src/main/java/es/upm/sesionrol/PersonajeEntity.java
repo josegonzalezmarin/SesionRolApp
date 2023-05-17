@@ -18,7 +18,7 @@ public class PersonajeEntity implements Serializable {
     private String dndclass;
 
     private int lvl;
-    private int exp;
+    private String exp;
 
 
 
@@ -63,7 +63,7 @@ public class PersonajeEntity implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getRace() {
@@ -98,11 +98,11 @@ public class PersonajeEntity implements Serializable {
         this.lvl = lvl;
     }
 
-    public int getExp() {
+    public String getExp() {
         return exp;
     }
 
-    public void setExp(int exp) {
+    public void setExp(String exp) {
         this.exp = exp;
     }
 

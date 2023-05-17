@@ -60,7 +60,7 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
             convertView = LayoutInflater.from(context).inflate(R.layout.character_summary, parent, false);
         }
 
-        TextView tvName = convertView.findViewById(R.id.nameView);
+        TextView tvName = convertView.findViewById(R.id.nameView1);
         TextView tvClass = convertView.findViewById(R.id.classView);
         TextView tvRace = convertView.findViewById(R.id.raceView);
         TextView tvExp = convertView.findViewById(R.id.expView);
