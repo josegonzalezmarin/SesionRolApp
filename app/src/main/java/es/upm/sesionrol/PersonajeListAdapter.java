@@ -14,49 +14,52 @@ import java.util.List;
 
 public class PersonajeListAdapter extends RecyclerView.Adapter<PersonajeListAdapter.PersonajeViewHolder> {
 
-    class PersonajeViewHolder extends RecyclerView.ViewHolder {
-        private final TextView userItemView;
+    private List<PersonajeEntity> itemsList;
+
+
+    public class PersonajeViewHolder extends RecyclerView.ViewHolder {
+        private final TextView name;
+        private final TextView race;
+        private final TextView dndclass;
+        private final TextView lvl;
+        private final TextView exp;
 
         private PersonajeViewHolder(View itemView) {
             super(itemView);
-            userItemView = itemView.findViewById(R.id.textView);
+            name = itemView.findViewById(R.id.nameView);
+            race = itemView.findViewById(R.id.raceView);
+            dndclass = itemView.findViewById(R.id.classView);
+            lvl = itemView.findViewById(R.id.lvlView);
+            exp = itemView.findViewById(R.id.expView);
+
         }
     }
 
-    private final LayoutInflater mInflater;
-    private List<PersonajeEntity> itemsList;
 
-    /**
-     * Constructor
-     *
-     * @param context context
-     */
-    public PersonajeListAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
-    }
+
+
+
+
 
     @NonNull
     @Override
     public PersonajeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.character_summary, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.character_summary, parent, false);
         return new PersonajeViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PersonajeViewHolder holder, int position) {
-        if (itemsList != null) {
-            PersonajeEntity current = itemsList.get(position);
-            holder.userItemView.setText(current.getName());
-            //TODO
-            //Aqui tienes que meter lo que se ensena en la vista
-        } else {
-            // Covers the case of data not being ready yet.
-            holder.userItemView.setText("No item");
-        }
+    public void onBindViewHolder(@NonNull PersonajeViewHolder holder, int pos) {
+            PersonajeEntity current = itemsList.get(pos);
+            holder.name.setText(current.getName());
+            holder.race.setText(current.getRace());
+            holder.dndclass.setText(current.getDndclass());
+            holder.lvl.setText(current.getLvl());
+            holder.exp.setText(current.getExp());
     }
 
     public void setItems(List<PersonajeEntity> userList){
-        itemsList = userList;
+        this.itemsList = userList;
         notifyDataSetChanged();
     }
 

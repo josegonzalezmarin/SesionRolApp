@@ -117,16 +117,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:minHeight="48dp"
-                android:text="Name" />
+                android:hint="Nivel"
+                android:inputType="number"/>
 
             <TextView
                 android:id="@+id/expPointsTxt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Puntos Experiencia" />
+                android:text="Puntos Experiencia"
+                />
 
             <EditText
                 android:id="@+id/insertExpPoints"
@@ -134,8 +134,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="Experiencia"
+                android:inputType="number"/>
         </LinearLayout>
 
         <LinearLayout

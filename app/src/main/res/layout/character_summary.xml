@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout
         android:id="@+id/hero"
         android:layout_width="match_parent"
@@ -30,7 +31,7 @@
 
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/expView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="InserteAqui"
@@ -42,7 +43,6 @@
                 app:layout_constraintVertical_bias="0.983" />
 
             <TextView
-                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nivel"
@@ -101,6 +101,7 @@
                 app:layout_constraintVertical_bias="1.0" />
 
             <TextView
+                android:id="@+id/nameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="InserteAqui"
@@ -112,6 +113,7 @@
                 app:layout_constraintVertical_bias="0.065" />
 
             <TextView
+                android:id="@+id/raceView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="InserteAqui"
@@ -123,6 +125,7 @@
                 app:layout_constraintVertical_bias="0.377" />
 
             <TextView
+                android:id="@+id/classView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="InserteAqui"
@@ -134,7 +137,7 @@
                 app:layout_constraintVertical_bias="0.672" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/lvlView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="InserteAqui"

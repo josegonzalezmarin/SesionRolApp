@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,12 +22,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.ValueEventListener;
 
-public class CreateCharacter  extends AppCompatActivity {
+public class EditCharacter  extends AppCompatActivity {
     private DrawerLayout cCharacter;
     Spinner raceSpinner;
     Spinner classSpinner;
@@ -35,19 +39,79 @@ public class CreateCharacter  extends AppCompatActivity {
     private MenuItem crearcampana;
     private DatabaseReference db;
     private Button savebt;
+
+
+
+    private DatabaseReference dbref;
+    private ValueEventListener velistener;
+
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
-        setContentView(R.layout.create_character);
+        setContentView(R.layout.edit_character);
         cCharacter = findViewById(R.id.createcharacter);
         raceSpinner = findViewById(R.id.race_spinner);
         classSpinner = findViewById(R.id.class_spinner);
         aligmSpinner = findViewById(R.id.aligment_spinner);
         backgSpinner = findViewById(R.id.background_spinner);
         savebt = findViewById(R.id.saveC);
+
+        dbref = FirebaseDatabase.getInstance().getReference().child("personaje");
+
+
+        velistener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot ds) {
+                // Se invoca cuando los datos cambian en el nodo "usuarios"
+
+                for (DataSnapshot s : ds.getChildren()) {
+                    // Obtén los datos de cada hijo
+                    String aligm = s.child("aligm").getValue(String.class);
+                    String backg = s.child("backg").getValue(String.class);
+                    String bond = s.child("bond").getValue(String.class);
+                    int charism = s.child("charism").getValue(Integer.class);
+                    String competences = s.child("competences").getValue(String.class);
+                    int constit = s.child("constit").getValue(Integer.class);
+                    int dex = s.child("dex").getValue(Integer.class);
+                    String dndclass = s.child("dndclass").getValue(String.class);
+                    String equipment = s.child("equipment").getValue(String.class);
+                    int exp = s.child("exp").getValue(Integer.class);
+                    String feature = s.child("feature").getValue(String.class);
+                    String flaws = s.child("flaws").getValue(String.class);
+                    String ideal = s.child("ideal").getValue(String.class);
+                    int intel = s.child("intel").getValue(Integer.class);
+                    int lvl = s.child("lvl").getValue(Integer.class);
+                    String name = s.child("name").getValue(String.class);
+                    String personality = s.child("personality").getValue(String.class);
+                    String race = s.child("race").getValue(String.class);
+                    int str = s.child("str").getValue(Integer.class);
+                    int wisd = s.child("wisd").getValue(Integer.class);
+
+
+                    // Haz lo que necesites con los datos
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Se invoca cuando se produce un error en la lectura de los datos
+                Log.e("TAG", "Error en la lectura: " + databaseError.getMessage());
+            }
+
+
+        };
+        // Agrega el listener a la referencia de la base de datos
+        dbref.addValueEventListener(velistener);
+
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navigation_view = findViewById(R.id.navigation_view);
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null) actionBar.setDisplayHomeAsUpEnabled(true);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,cCharacter,toolbar,R.string.open,R.string.close){
@@ -90,7 +154,7 @@ public class CreateCharacter  extends AppCompatActivity {
 
                 Log.d("DigameUSteDonded",lvls + strs + dexs +conss+ints+names);
                 if(names.isEmpty()||lvls==""||strs==""||dexs==""||conss==""||ints==""||wisds==""||chars=="")
-                    Toast.makeText(CreateCharacter.this, "Campos obligatorios sin rellenar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditCharacter.this, "Campos obligatorios sin rellenar", Toast.LENGTH_SHORT).show();
                 else {
                     PersonajeEntity p = new PersonajeEntity(
                             names,raceSpinner.getSelectedItem().toString(),
@@ -180,6 +244,15 @@ public class CreateCharacter  extends AppCompatActivity {
                 // TODO sacar info de la api
             }
         });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dbref != null && velistener != null) {
+            dbref.removeEventListener(velistener);
+        }
     }
     public void OnBackPressed(){
         if(cCharacter.isDrawerOpen(GravityCompat.START)) cCharacter.openDrawer(GravityCompat.END);

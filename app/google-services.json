@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "877653758309",
+    "firebase_url": "https://sesionrol-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "sesionrol",
     "storage_bucket": "sesionrol.appspot.com"
   },
@@ -9,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:877653758309:android:1727f4ac701bde2446918c",
         "android_client_info": {
-          "package_name": "com.example.proyecto"
+          "package_name": "es.upm.sesionrol"
         }
       },
       "oauth_client": [
