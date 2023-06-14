@@ -21,10 +21,13 @@ import android.view.View;
 import android.webkit.ValueCallback;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,12 +46,14 @@ public class MainHub extends AppCompatActivity {
     private DrawerLayout mainhub;
     private ListView listView;
     private PersonajeListAdapter persAdapter;
-    private List<PersonajeEntity> personajes;
+    private List<PersonajeEntity> personajes = new ArrayList<>();
 
+    DataSnapshot sactual;
 
+    DatabaseReference dbref;
 
+    private User actualusu;
     private FirebaseFirestore db;
-
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,56 +61,74 @@ public class MainHub extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         setContentView(R.layout.main_hub);
 
-        personajes =new ArrayList<>();
-        listView = findViewById(R.id.listadoFirebase);
+        listView=findViewById(R.id.listadoFirebase);
 
-        cargarDatosDesdeFirestore();
+        FirebaseAuth aut = FirebaseAuth.getInstance();
+        FirebaseUser act = aut.getCurrentUser();
 
-        /*db.collection("personajes").addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Log.w("FirestoreListener", "Error al escuchar cambios", error);
-                    return;
-                }
-                if (value != null && !value.isEmpty()) {
-                    // Se han actualizado los documentos en la colección, puedes procesar los nuevos datos aquí
-                    personajes = value.toObjects(PersonajeEntity.class);
-                    // Realiza las acciones necesarias con la lista de personajes actualizada
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    // Accede a los datos de cada hijo del nodo
+                    Object listPers = new ArrayList<>();
+                    Object listCamp = new ArrayList<>();
+                    User actualusu = new User();
+                    if (snapshot.getKey().equals("characters")) {
+                        listPers = snapshot.getValue();
+                    }
+                    if (snapshot.getKey().equals("campanas")) {
+                        listCamp = snapshot.getValue();
+                    }
+                    if (snapshot.getKey().equals("mail")) {
+                        Object email = snapshot.getValue();
+                        if (act.getEmail().equals(email)) {
 
+                            actualusu = new User((String) email, (List<PersonajeEntity>) listPers, (List<CampaignEntity>) listCamp);
 
-
-                    // Por ejemplo, si estás usando ListView:
-
-                    Log.d("Lista nosesivacia",personajes.size()+"");
-                    persAdapter.addAll(personajes);
-                    persAdapter.notifyDataSetChanged();
-                    PersonajeListAdapter personajeAdapter = new PersonajeListAdapter(MainHub.this, personajes);
-                    listView.setAdapter(personajeAdapter);
+                            persAdapter.addAll(actualusu.getCharacters());
+                            persAdapter.notifyDataSetChanged();
+                            PersonajeListAdapter personajeAdapter = new PersonajeListAdapter(MainHub.this,R.layout.character_summary, actualusu.getCharacters());
+                            listView.setAdapter(personajeAdapter);
+                        }
+                    }
+                    // Haz algo con los datos obtenidos
                 }
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Manejar el error en caso de que la consulta falle
+            }
         });
-*/
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+
+
+        if(actualusu==null||actualusu.getCharacters()==null)
+            personajes = null;
+        else {
+            personajes = actualusu.getCharacters();
+            listView = findViewById(R.id.listadoFirebase);
+
+            persAdapter = new PersonajeListAdapter(this, R.layout.character_summary, personajes);
+
+            listView.setAdapter(persAdapter);
         }
-        persAdapter = new PersonajeListAdapter(this,personajes);
-        listView.setAdapter(persAdapter);
+
+
 
         mainhub = findViewById(R.id.main_hub);
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navigation_view = findViewById(R.id.navigation_view);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar!=null) actionBar.setDisplayHomeAsUpEnabled(true);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,mainhub,toolbar,R.string.open,R.string.close){
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mainhub, toolbar, R.string.open, R.string.close) {
             @Override
-            public void onDrawerClosed(View drawerView){
+            public void onDrawerClosed(View drawerView) {
                 MenuItem item = navigation_view.getCheckedItem();
-                if(item!=null) cambiar_pantalla(item.getItemId());
+                if (item != null) cambiar_pantalla(item.getItemId());
             }
 
         };
@@ -120,81 +143,33 @@ public class MainHub extends AppCompatActivity {
         });
 
 
-
-
-
-
-
     }
 
-    public void OnBackPressed(){
-        if(mainhub.isDrawerOpen(GravityCompat.START)) mainhub.openDrawer(GravityCompat.END);
+    public void OnBackPressed() {
+        if (mainhub.isDrawerOpen(GravityCompat.START)) mainhub.openDrawer(GravityCompat.END);
         else super.onBackPressed();
     }
 
 
-
-
-
-    public void cambiar_pantalla(int id_item){
+    public void cambiar_pantalla(int id_item) {
         Intent cambio;
-        if(id_item==R.id.principal){
+        if (id_item == R.id.principal) {
             cambio = new Intent(findViewById(R.id.principal).getContext(), MainHub.class);
             startActivity(cambio);
-        }
-        else if(id_item==R.id.crear_campana){
-            cambio= new Intent(findViewById(R.id.crear_campana).getContext(), CreateCampaign.class);
+        } else if (id_item == R.id.crear_campana) {
+            cambio = new Intent(findViewById(R.id.crear_campana).getContext(), CreateCampaign.class);
             startActivity(cambio);
-        }
-        else if(id_item==R.id.crear_personaje){
-            cambio= new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
+        } else if (id_item == R.id.crear_personaje) {
+            cambio = new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
-        }
-        else if(id_item==R.id.editar_personaje){
-            cambio= new Intent(findViewById(R.id.editar_personaje).getContext(), CreateCharacter.class);
+        } else if (id_item == R.id.editar_personaje) {
+            cambio = new Intent(findViewById(R.id.editar_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
-        }
-        else{
-            cambio= new Intent(findViewById(R.id.activity_main).getContext(), MainActivity.class);
+        } else {
+            cambio = new Intent(findViewById(R.id.activity_main).getContext(), MainActivity.class);
             startActivity(cambio);
         }
 
 
-    }
-
-
-    private void cargarDatosDesdeFirestore() {
-        db.collection("personaje")
-                .get()
-                .addOnSuccessListener(
-                        new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        personajes = new ArrayList<>();
-
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            PersonajeEntity personaje = documentSnapshot.toObject(PersonajeEntity.class);
-                            personajes.add(personaje);
-                        }
-
-                        // Aquí puedes actualizar tu ListView o RecyclerView con los datos
-                        // y crear las tarjetas de forma dinámica.
-                        // Puedes usar el adaptador o manipular directamente la vista.
-
-                        // Por ejemplo, si estás usando ListView:
-
-                        Log.d("Lista nosesivacia",personajes.size()+"");
-                        persAdapter.addAll(personajes);
-                        persAdapter.notifyDataSetChanged();
-                        PersonajeListAdapter personajeAdapter = new PersonajeListAdapter(MainHub.this, personajes);
-                        listView.setAdapter(personajeAdapter);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("AAAAAAAAAAAAAAAAAAAAAAAA", "AAAAAAAAAAAAAAAAAAAAAAAAError al obtener los datos de Firestore", e);
-                    }
-                });
     }
 }

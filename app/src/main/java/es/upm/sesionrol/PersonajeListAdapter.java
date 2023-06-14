@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,42 +39,52 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
 
     private Context context;
     private List<PersonajeEntity> listaPersonajes;
-    private LayoutInflater inflater;
-    private DatabaseReference databaseReference;
-    private ChildEventListener pChildEventListener;
-
-    // variable for Text view.
-    private TextView retrieveTV;
-    ListView lvListadoFirebase;
-    List<PersonajeEntity> lRow;
+    private int resourceLayout;
 
 
-    public PersonajeListAdapter(Context context, List<PersonajeEntity> listaPersonajes) {
-        super(context, 0, listaPersonajes);
+    public PersonajeListAdapter(@NonNull Context context,int resource, List<PersonajeEntity> listaPersonajes) {
+        super(context, resource, listaPersonajes);
         this.context = context;
+        this.resourceLayout = resource;
         this.listaPersonajes = listaPersonajes;
     }
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.character_summary, parent, false);
+        View view = convertView;
+
+
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(resourceLayout,null);
         }
 
-        TextView tvName = convertView.findViewById(R.id.nameView1);
-        TextView tvClass = convertView.findViewById(R.id.classView);
-        TextView tvRace = convertView.findViewById(R.id.raceView);
-        TextView tvExp = convertView.findViewById(R.id.expView);
-        TextView tvLvl = convertView.findViewById(R.id.lvlView);
 
         PersonajeEntity personaje = listaPersonajes.get(position);
+
+        ImageView imagen = view.findViewById(R.id.imagenperf);
+        imagen.setImageResource(personaje.getImage());
+
+        TextView tvName = view.findViewById(R.id.nameView);
         tvName.setText(personaje.getName());
+
+        TextView tvClass = view.findViewById(R.id.classView);
         tvClass.setText(personaje.getDndclass());
+
+        TextView tvRace = view.findViewById(R.id.raceView);
         tvRace.setText(personaje.getRace());
+
+        TextView tvExp = view.findViewById(R.id.expView);
         tvExp.setText(personaje.getExp()+"");
+
+        TextView tvLvl = view.findViewById(R.id.lvlView);
         tvLvl.setText(personaje.getLvl()+"");
 
-        return convertView;
+
+
+
+
+
+        return view;
     }
 
     @Override
@@ -100,4 +111,14 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
 
         return itemView;
     }*/
+    @Override
+    public PersonajeEntity getItem(int position) {
+        return getItemList().get(position);
+    }
+
+    private List<PersonajeEntity> getItemList() {
+        // Supongamos que tienes una lista de objetos Item llamada "itemList"
+        // Puedes modificar este método según cómo tengas implementada tu lista de elementos
+        return listaPersonajes;
+    }
 }

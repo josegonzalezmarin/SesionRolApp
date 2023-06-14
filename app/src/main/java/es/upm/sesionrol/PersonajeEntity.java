@@ -1,4 +1,5 @@
 package es.upm.sesionrol;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -7,7 +8,6 @@ import java.io.Serializable;
 @Entity(tableName = PersonajeEntity.TABLA)
 public class PersonajeEntity implements Serializable {
     static public final String TABLA = "personaje";
-
     @PrimaryKey(autoGenerate = true)
     private int pid;
 
@@ -16,10 +16,11 @@ public class PersonajeEntity implements Serializable {
     private String race;
 
     private String dndclass;
+    private int image;
+
 
     private int lvl;
     private String exp;
-
 
 
     private String aligm;
@@ -41,21 +42,31 @@ public class PersonajeEntity implements Serializable {
 
     //private int money[];
 
-    public PersonajeEntity(){
+    public PersonajeEntity() {
 
     }
+
     public PersonajeEntity(String name, String race, String dndclass, int lvl, int str, int dex, int constit, int intel, int wisd, int charism) {
         this.name = name;
         this.race = race;
         this.dndclass = dndclass;
         //money =new int[5];
-        this.lvl=lvl;
-        this.str=str;
-        this.dex=dex;
-        this.constit=constit;
-        this.intel=intel;
-        this.wisd=wisd;
-        this.charism =charism;
+        this.lvl = lvl;
+        this.str = str;
+        this.dex = dex;
+        this.constit = constit;
+        this.intel = intel;
+        this.wisd = wisd;
+        this.charism = charism;
+    }
+
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 
     public int getPid() {
@@ -170,9 +181,13 @@ public class PersonajeEntity implements Serializable {
         this.charism = charism;
     }
 
-    public String getCompetences() { return competences; }
+    public String getCompetences() {
+        return competences;
+    }
 
-    public void setCompetences(String competences) {this.competences = competences; }
+    public void setCompetences(String competences) {
+        this.competences = competences;
+    }
 
     public String getEquipment() {
         return equipment;
