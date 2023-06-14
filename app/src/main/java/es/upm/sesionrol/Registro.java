@@ -28,7 +28,7 @@ public class Registro extends AppCompatActivity {
      */
     private FirebaseAuth mAuthR;
     User use;
-    private String TAG;
+    private String TAG ="Vamos a ver que me pierdo";
     DatabaseReference dbreff;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +50,12 @@ public class Registro extends AppCompatActivity {
                             use.setMail(emailEdtR.getText().toString().trim());
                             dbreff.push().setValue(use);
                             Log.d(TAG, "createUserWithEmail:success");
+
                             FirebaseUser user = mAuthR.getCurrentUser();
 
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(Registro.this, "Autentication failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Registro.this, "Fallo al crear", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

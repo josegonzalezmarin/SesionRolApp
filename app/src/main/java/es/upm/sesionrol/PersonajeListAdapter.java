@@ -81,44 +81,7 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
 
 
 
-
-
-
         return view;
     }
 
-    @Override
-    public int getCount() {
-        return listaPersonajes.size();
-    }
-
-    /*
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View itemView = convertView;
-        if (itemView == null) {
-            itemView = inflater.inflate(R.layout.character_summary, parent, false);
-        }
-
-        PersonajeEntity personaje = getItem(position);
-
-        TextView nombreTextView = itemView.findViewById(R.id.nameView);
-        TextView nivelTextView = itemView.findViewById(R.id.lvlView);
-        TextView claseTextView = itemView.findViewById(R.id.classView);
-
-        nombreTextView.setText(personaje.getName());
-        nivelTextView.setText(String.valueOf(personaje.getLvl()));
-        claseTextView.setText(personaje.getDndclass());
-
-        return itemView;
-    }*/
-    @Override
-    public PersonajeEntity getItem(int position) {
-        return getItemList().get(position);
-    }
-
-    private List<PersonajeEntity> getItemList() {
-        // Supongamos que tienes una lista de objetos Item llamada "itemList"
-        // Puedes modificar este método según cómo tengas implementada tu lista de elementos
-        return listaPersonajes;
-    }
 }

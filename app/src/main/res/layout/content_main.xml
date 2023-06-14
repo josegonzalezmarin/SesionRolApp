@@ -9,59 +9,35 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/main_hub">
 
+
+    <TextView
+        android:id="@+id/tvFirebaseC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Coleccion de Campañas Creadas"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="20dp" />
+
     <ListView
+        android:id="@+id/listadoFirebaseC"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
-    <ScrollView
+
+    <TextView
+        android:id="@+id/tvFirebase"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Coleccion de Personajes Creados"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    <ListView
+        android:id="@+id/listadoFirebase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvFirebaseC"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Coleccion de Campañas Creadas"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
-
-                <ListView
-                    android:id="@+id/listadoFirebaseC"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvFirebase"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Coleccion de Personajes Creados"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
-
-                <ListView
-                    android:id="@+id/listadoFirebase"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
 
 </LinearLayout>

@@ -4,12 +4,11 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = PersonajeEntity.TABLA)
+
 public class PersonajeEntity implements Serializable {
-    static public final String TABLA = "personaje";
-    @PrimaryKey(autoGenerate = true)
-    private int pid;
+
 
     private String name;
 
@@ -69,9 +68,6 @@ public class PersonajeEntity implements Serializable {
         this.image = image;
     }
 
-    public int getPid() {
-        return pid;
-    }
 
     public String getName() {
         return this.name;
@@ -97,9 +93,7 @@ public class PersonajeEntity implements Serializable {
         this.dndclass = dndclass;
     }
 
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
+
 
     public int getLvl() {
         return lvl;

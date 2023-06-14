@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.ValueCallback;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.collect.ForwardingSortedMap;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,11 +40,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class MainHub extends AppCompatActivity {
+public class MainHub extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private DrawerLayout mainhub;
     private ListView listView;
     private PersonajeListAdapter persAdapter;
@@ -61,42 +65,48 @@ public class MainHub extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         setContentView(R.layout.main_hub);
 
-        listView=findViewById(R.id.listadoFirebase);
+        listView = findViewById(R.id.listadoFirebase);
 
         FirebaseAuth aut = FirebaseAuth.getInstance();
         FirebaseUser act = aut.getCurrentUser();
 
+        listView.setOnItemClickListener(this);
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
-        reference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference dbreff = FirebaseDatabase.getInstance().getReference("User");
+
+
+        dbreff.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("¨Y lo tonto que erers que¨", "Pero porque no pasa de aqui 2:success ");
                     // Accede a los datos de cada hijo del nodo
-                    Object listPers = new ArrayList<>();
-                    Object listCamp = new ArrayList<>();
+                    List<CampaignEntity> listCamp = new ArrayList<>();
                     User actualusu = new User();
-                    if (snapshot.getKey().equals("characters")) {
-                        listPers = snapshot.getValue();
-                    }
-                    if (snapshot.getKey().equals("campanas")) {
-                        listCamp = snapshot.getValue();
-                    }
-                    if (snapshot.getKey().equals("mail")) {
-                        Object email = snapshot.getValue();
-                        if (act.getEmail().equals(email)) {
-
-                            actualusu = new User((String) email, (List<PersonajeEntity>) listPers, (List<CampaignEntity>) listCamp);
-
-                            persAdapter.addAll(actualusu.getCharacters());
-                            persAdapter.notifyDataSetChanged();
-                            PersonajeListAdapter personajeAdapter = new PersonajeListAdapter(MainHub.this,R.layout.character_summary, actualusu.getCharacters());
-                            listView.setAdapter(personajeAdapter);
+                    PersonajeEntity p = new PersonajeEntity();
+                    Gson gson = new Gson();
+                    Object email = snapshot.child("mail").getValue();
+                    if (act.getEmail().equals(email)) {
+                        for (DataSnapshot childSnapshot : snapshot.child("personaje").getChildren()) {
+                            Log.d("¨Y lo tonto que erers que¨", "Pero porque no pasa de aqui 3:success "+childSnapshot.toString());
+                            HashMap<String, Object> data = (HashMap<String, Object>) childSnapshot.getValue();
+                            String json = gson.toJson(data);
+                             p = gson.fromJson(json,PersonajeEntity.class);
+                            personajes.add(p);
                         }
+
+                        Log.d("¨Y lo tonto que erers que¨", "Pues resulta que si mira:success"+personajes.size()+personajes.contains(p));
+                        actualusu = new User((String) email,personajes,listCamp);
+
+
+                        persAdapter = new PersonajeListAdapter(MainHub.this, R.layout.character_summary, personajes);
+                        listView.setAdapter(persAdapter);
                     }
+
                     // Haz algo con los datos obtenidos
                 }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -104,8 +114,8 @@ public class MainHub extends AppCompatActivity {
             }
         });
 
-
-        if(actualusu==null||actualusu.getCharacters()==null)
+/*
+        if (actualusu == null || actualusu.getCharacters() == null)
             personajes = null;
         else {
             personajes = actualusu.getCharacters();
@@ -114,8 +124,7 @@ public class MainHub extends AppCompatActivity {
             persAdapter = new PersonajeListAdapter(this, R.layout.character_summary, personajes);
 
             listView.setAdapter(persAdapter);
-        }
-
+        }/*/
 
 
         mainhub = findViewById(R.id.main_hub);
@@ -144,7 +153,38 @@ public class MainHub extends AppCompatActivity {
 
 
     }
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l){
+        Intent cambio = new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
+        //TODO Esto es lo que quiero hacer primero
+        PersonajeEntity p = personajes.get(position);
+        cambio.putExtra("name",p.getName());
+        cambio.putExtra("dndClass",p.getDndclass());
+        cambio.putExtra("race",p.getRace());
+        cambio.putExtra("image",p.getImage());
+        cambio.putExtra("lvl",p.getLvl());
+        cambio.putExtra("exp",p.getExp());
+        cambio.putExtra("aligm",p.getAligm());
+        cambio.putExtra("backg",p.getBackg());
+        cambio.putExtra("str",p.getStr());
+        cambio.putExtra("dex",p.getDex());
+        cambio.putExtra("constit",p.getConstit());
+        cambio.putExtra("intel",p.getIntel());
+        cambio.putExtra("wisd",p.getWisd());
+        cambio.putExtra("charism",p.getCharism());
+        cambio.putExtra("competences",p.getCompetences());
+        cambio.putExtra("equipment",p.getEquipment());
+        cambio.putExtra("ideal",p.getIdeal());
+        cambio.putExtra("bond",p.getBond());
+        cambio.putExtra("feature",p.getFeature());
+        cambio.putExtra("personality",p.getPersonality());
+        cambio.putExtra("flaws",p.getFlaws());
 
+
+        //cambio.putExtra("nombre", use.getNombre());
+        //cambio.putExtra("edad", objeto.getEdad());
+        startActivity(cambio);
+    }
     public void OnBackPressed() {
         if (mainhub.isDrawerOpen(GravityCompat.START)) mainhub.openDrawer(GravityCompat.END);
         else super.onBackPressed();

@@ -72,7 +72,45 @@ public class CreateCharacter  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        EditText name = findViewById(R.id.insertNametxt);
+        EditText lvl = findViewById(R.id.insertLevel);
+        EditText str = findViewById(R.id.strTxt);
+        EditText dex = findViewById(R.id.dexTxt);
+        EditText consti = findViewById(R.id.constTxt);
+        EditText intel = findViewById(R.id.intTxt);
+        EditText wisd = findViewById(R.id.sabTxt);
+        EditText charism = findViewById(R.id.charTxt);
+        EditText exp = findViewById(R.id.insertExpPoints);
+        EditText comp = findViewById(R.id.comptxt);
+        EditText bond = findViewById(R.id.bondtxt);
+        EditText equip = findViewById(R.id.equipmentxt);
+        EditText feat = findViewById(R.id.featuretxt);
+        EditText flaw = findViewById(R.id.flawstxt);
+        EditText ideal = findViewById(R.id.idealtxt);
+        EditText pers = findViewById(R.id.perstxt);
 
+        Intent intent = getIntent();
+        String nameg = intent.getStringExtra("name");
+        String race = intent.getStringExtra("race");
+        String dndclass = intent.getStringExtra("dndclass");
+        String expg = intent.getStringExtra("exp");
+        String aligm = intent.getStringExtra("aligm");
+        String backg = intent.getStringExtra("backg");
+        int strg = intent.getIntExtra("str", 0);
+        int dexg = intent.getIntExtra("dex", 0);
+        int constitg = intent.getIntExtra("constit", 0);
+        int intelg = intent.getIntExtra("intel", 0);
+        int wisdg = intent.getIntExtra("wisd", 0);
+        int charismg = intent.getIntExtra("charism", 0);
+        String competencesg = intent.getStringExtra("competences");
+        String equipmentg = intent.getStringExtra("equipment");
+        String idealg = intent.getStringExtra("ideal");
+        String bondg = intent.getStringExtra("bond");
+        String featureg = intent.getStringExtra("feature");
+        String personalityg = intent.getStringExtra("personality");
+        String flawsg = intent.getStringExtra("flaws");
+
+        name.setText(nameg);
 
 
         stref = FirebaseStorage.getInstance().getReference();
@@ -237,8 +275,6 @@ public class CreateCharacter  extends AppCompatActivity {
                                     nodoEncontradoRef.child("personaje").child(names).setValue(insertarp);
 
                                 }
-                            } else {
-                                // No se encontró ningún nodo con el correo electrónico buscado
                             }
                         }
 
