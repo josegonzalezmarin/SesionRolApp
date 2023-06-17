@@ -274,10 +274,6 @@ public class EditCharacter  extends AppCompatActivity {
             cambio= new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
         }
-        else if(id_item==R.id.editar_personaje){
-            cambio= new Intent(findViewById(R.id.editar_personaje).getContext(), CreateCampaign.class);
-            startActivity(cambio);
-        }
         else{
             cambio= new Intent(findViewById(R.id.crear_campana).getContext(), MainActivity.class);
             startActivity(cambio);

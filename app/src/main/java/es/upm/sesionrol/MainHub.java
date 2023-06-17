@@ -52,9 +52,9 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
     private PersonajeListAdapter persAdapter;
     private List<PersonajeEntity> personajes = new ArrayList<>();
 
-    DataSnapshot sactual;
+    private DataSnapshot sactual;
 
-    DatabaseReference dbref;
+    private DatabaseReference dbreff;
 
     private User actualusu;
     private FirebaseFirestore db;
@@ -72,15 +72,13 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
 
         listView.setOnItemClickListener(this);
 
-        DatabaseReference dbreff = FirebaseDatabase.getInstance().getReference("User");
+        dbreff = FirebaseDatabase.getInstance().getReference("User");
 
 
         dbreff.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.d("¨Y lo tonto que erers que¨", "Pero porque no pasa de aqui 2:success ");
-                    // Accede a los datos de cada hijo del nodo
                     List<CampaignEntity> listCamp = new ArrayList<>();
                     User actualusu = new User();
                     PersonajeEntity p = new PersonajeEntity();
@@ -88,14 +86,12 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
                     Object email = snapshot.child("mail").getValue();
                     if (act.getEmail().equals(email)) {
                         for (DataSnapshot childSnapshot : snapshot.child("personaje").getChildren()) {
-                            Log.d("¨Y lo tonto que erers que¨", "Pero porque no pasa de aqui 3:success "+childSnapshot.toString());
                             HashMap<String, Object> data = (HashMap<String, Object>) childSnapshot.getValue();
                             String json = gson.toJson(data);
                              p = gson.fromJson(json,PersonajeEntity.class);
                             personajes.add(p);
                         }
 
-                        Log.d("¨Y lo tonto que erers que¨", "Pues resulta que si mira:success"+personajes.size()+personajes.contains(p));
                         actualusu = new User((String) email,personajes,listCamp);
 
 
@@ -103,28 +99,17 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
                         listView.setAdapter(persAdapter);
                     }
 
-                    // Haz algo con los datos obtenidos
                 }
             }
 
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Manejar el error en caso de que la consulta falle
+                Log.d("Fallo Base de datos","Ha habido un fallo al acceder");
             }
         });
 
-/*
-        if (actualusu == null || actualusu.getCharacters() == null)
-            personajes = null;
-        else {
-            personajes = actualusu.getCharacters();
-            listView = findViewById(R.id.listadoFirebase);
 
-            persAdapter = new PersonajeListAdapter(this, R.layout.character_summary, personajes);
-
-            listView.setAdapter(persAdapter);
-        }/*/
 
 
         mainhub = findViewById(R.id.main_hub);
@@ -156,10 +141,10 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l){
         Intent cambio = new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
-        //TODO Esto es lo que quiero hacer primero
         PersonajeEntity p = personajes.get(position);
         cambio.putExtra("name",p.getName());
-        cambio.putExtra("dndClass",p.getDndclass());
+        cambio.putExtra("lvl",p.getLvl());
+        cambio.putExtra("dndclass",p.getDndclass());
         cambio.putExtra("race",p.getRace());
         cambio.putExtra("image",p.getImage());
         cambio.putExtra("lvl",p.getLvl());
@@ -180,9 +165,6 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
         cambio.putExtra("personality",p.getPersonality());
         cambio.putExtra("flaws",p.getFlaws());
 
-
-        //cambio.putExtra("nombre", use.getNombre());
-        //cambio.putExtra("edad", objeto.getEdad());
         startActivity(cambio);
     }
     public void OnBackPressed() {
@@ -201,9 +183,6 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
             startActivity(cambio);
         } else if (id_item == R.id.crear_personaje) {
             cambio = new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
-            startActivity(cambio);
-        } else if (id_item == R.id.editar_personaje) {
-            cambio = new Intent(findViewById(R.id.editar_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
         } else {
             cambio = new Intent(findViewById(R.id.activity_main).getContext(), MainActivity.class);

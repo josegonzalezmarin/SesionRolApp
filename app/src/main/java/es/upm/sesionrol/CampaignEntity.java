@@ -4,39 +4,44 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = CampaignEntity.TABLA)
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class CampaignEntity {
-    static public final String TABLA = "campana";
 
-    @PrimaryKey(autoGenerate = true)
-    protected int cid;
 
-    protected String name;
 
-    protected String raza;
+    private String name;
 
-    protected String clase;
+    private int img;
 
-    public CampaignEntity(String name, String raza, String clase) {
+    private List<String> jugadores;
+
+    public CampaignEntity() {}
+    public CampaignEntity(String name, int img, List<String> j) {
         this.name = name;
-        this.raza = raza;
-        this.clase = clase;
+        this.img = img;
+        j = new ArrayList<>();
+        this.jugadores = j;
     }
 
-    public int getPid() {
-        return cid;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getName() {
-        return name;
+    public void setImg(int img) {
+        this.img = img;
     }
 
-    public String getRaza() {
-        return raza;
+    public List<String> getJugadores() {
+        return jugadores;
     }
 
-    public String getClase() {
-        return clase;
+    public void setJugadores(List<String> jugadores) {
+        this.jugadores = jugadores;
     }
+
+
 
 }

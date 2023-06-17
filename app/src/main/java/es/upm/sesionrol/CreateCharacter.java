@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -71,6 +72,35 @@ public class CreateCharacter  extends AppCompatActivity {
     private Button savebt;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.create_character);
+
+        raceSpinner = findViewById(R.id.race_spinner);;
+        classSpinner= findViewById(R.id.class_spinner);
+        aligmSpinner= findViewById(R.id.aligment_spinner);
+        backgSpinner= findViewById(R.id.background_spinner);
+
+
+        Intent intent = getIntent();
+        String nameg = intent.getStringExtra("name");
+        String race = intent.getStringExtra("race");
+        String dndclass = intent.getStringExtra("dndclass");
+        String expg = intent.getStringExtra("exp");
+        String aligm = intent.getStringExtra("aligm");
+        String backg = intent.getStringExtra("backg");
+        int lvlg = intent.getIntExtra("lvl", 0);
+        int strg = intent.getIntExtra("str", 0);
+        int dexg = intent.getIntExtra("dex", 0);
+        int constitg = intent.getIntExtra("constit", 0);
+        int intelg = intent.getIntExtra("intel", 0);
+        int wisdg = intent.getIntExtra("wisd", 0);
+        int charismg = intent.getIntExtra("charism", 0);
+        String competencesg = intent.getStringExtra("competences");
+        String equipmentg = intent.getStringExtra("equipment");
+        String idealg = intent.getStringExtra("ideal");
+        String bondg = intent.getStringExtra("bond");
+        String featureg = intent.getStringExtra("feature");
+        String personalityg = intent.getStringExtra("personality");
+        String flawsg = intent.getStringExtra("flaws");
 
         EditText name = findViewById(R.id.insertNametxt);
         EditText lvl = findViewById(R.id.insertLevel);
@@ -88,37 +118,54 @@ public class CreateCharacter  extends AppCompatActivity {
         EditText flaw = findViewById(R.id.flawstxt);
         EditText ideal = findViewById(R.id.idealtxt);
         EditText pers = findViewById(R.id.perstxt);
-
-        Intent intent = getIntent();
-        String nameg = intent.getStringExtra("name");
-        String race = intent.getStringExtra("race");
-        String dndclass = intent.getStringExtra("dndclass");
-        String expg = intent.getStringExtra("exp");
-        String aligm = intent.getStringExtra("aligm");
-        String backg = intent.getStringExtra("backg");
-        int strg = intent.getIntExtra("str", 0);
-        int dexg = intent.getIntExtra("dex", 0);
-        int constitg = intent.getIntExtra("constit", 0);
-        int intelg = intent.getIntExtra("intel", 0);
-        int wisdg = intent.getIntExtra("wisd", 0);
-        int charismg = intent.getIntExtra("charism", 0);
-        String competencesg = intent.getStringExtra("competences");
-        String equipmentg = intent.getStringExtra("equipment");
-        String idealg = intent.getStringExtra("ideal");
-        String bondg = intent.getStringExtra("bond");
-        String featureg = intent.getStringExtra("feature");
-        String personalityg = intent.getStringExtra("personality");
-        String flawsg = intent.getStringExtra("flaws");
+        if (race != null) {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dnd_races, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            raceSpinner.setAdapter(adapter);
+            raceSpinner.setSelection(adapter.getPosition(race));
+        }
+        if (dndclass != null) {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dnd_classes, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            classSpinner.setAdapter(adapter);
+            classSpinner.setSelection(adapter.getPosition(dndclass));
+        }
+        if (aligm != null) {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dnd_aligment, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            aligmSpinner.setAdapter(adapter);
+            aligmSpinner.setSelection(adapter.getPosition(aligm));
+        }
+        if (backg != null) {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dnd_background, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            backgSpinner.setAdapter(adapter);
+            backgSpinner.setSelection(adapter.getPosition(backg));
+        }
 
         name.setText(nameg);
-
+        lvl.setText(String.valueOf(lvlg));
+        str.setText(String.valueOf(strg));
+        dex.setText(String.valueOf(dexg));
+        consti.setText(String.valueOf(constitg));
+        intel.setText(String.valueOf(intelg));
+        wisd.setText(String.valueOf(wisdg));
+        charism.setText(String.valueOf(charismg));
+        exp.setText(expg);
+        comp.setText(competencesg);
+        equip.setText(equipmentg);
+        bond.setText(bondg);
+        ideal.setText(idealg);
+        feat.setText(featureg);
+        pers.setText(personalityg);
+        flaw.setText(flawsg);
 
         stref = FirebaseStorage.getInstance().getReference();
 
         db = FirebaseFirestore.getInstance();
 
 
-        setContentView(R.layout.create_character);
+
 
         dbreff = FirebaseDatabase.getInstance().getReference("User");
 
@@ -211,7 +258,7 @@ public class CreateCharacter  extends AppCompatActivity {
                 EditText pers = findViewById(R.id.perstxt);
 
 
-                Log.d("DigameUSteDonded",lvls + exper+strs + dexs +conss+ints+names);
+
                 if(names.isEmpty()||lvls==""||exper==""||strs==""||dexs==""||conss==""||ints==""||wisds==""||chars=="")
                     Toast.makeText(CreateCharacter.this, "Campos obligatorios sin rellenar", Toast.LENGTH_SHORT).show();
                 else {
@@ -372,10 +419,6 @@ public class CreateCharacter  extends AppCompatActivity {
         }
         else if(id_item==R.id.crear_personaje){
             cambio= new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
-            startActivity(cambio);
-        }
-        else if(id_item==R.id.editar_personaje){
-            cambio= new Intent(findViewById(R.id.editar_personaje).getContext(), CreateCampaign.class);
             startActivity(cambio);
         }
         else{

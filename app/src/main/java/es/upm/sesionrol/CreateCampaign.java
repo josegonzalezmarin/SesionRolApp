@@ -1,14 +1,19 @@
 package es.upm.sesionrol;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -16,16 +21,65 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class CreateCampaign  extends AppCompatActivity {
     private DrawerLayout cCampaign;
 
-    private Button newHero;
+    private Button newPlayer;
+    private DatabaseReference dbreff;
+    private ListView listView;
+    private PersonajeListAdapter persAdapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_campaign);
+
+
+        listView = findViewById(R.id.jugadoresAniadidos);
+
+        listView.setOnItemClickListener(this);
+        dbreff = FirebaseDatabase.getInstance().getReference("User");
+
+        dbreff.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    List<CampaignEntity> listCamp = new ArrayList<>();
+                    User actualusu = new User();
+                    CampaignEntity p = new CampaignEntity();
+                    Gson gson = new Gson();
+                    Object email = snapshot.child("mail").getValue();
+                    if (act.getEmail().equals(email)) {
+                        for (DataSnapshot childSnapshot : snapshot.child("personaje").getChildren()) {
+                            HashMap<String, Object> data = (HashMap<String, Object>) childSnapshot.getValue();
+                            String json = gson.toJson(data);
+                            p = gson.fromJson(json,PersonajeEntity.class);
+                            personajes.add(p);
+                        }
+
+                        actualusu = new User((String) email,personajes,listCamp);
+
+
+                        persAdapter = new PersonajeListAdapter(MainHub.this, R.layout.character_summary, personajes);
+                        listView.setAdapter(persAdapter);
+                    }
+
+                }
+            }
+
+
         cCampaign = findViewById(R.id.createcampaign);
-        newHero = findViewById(R.id.newhero);
+        newPlayer = findViewById(R.id.newplayer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navigation_view = findViewById(R.id.navigation_view);
         setSupportActionBar(toolbar);
@@ -49,15 +103,23 @@ public class CreateCampaign  extends AppCompatActivity {
             return false;
         });
 
-        /*newHero.setOnClickListener(new View.OnClickListener() {
+        newPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LinearLayout dinamico = new LinearLayout(this);
-                dinamico.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                AlertDialog.Builder popup = new AlertDialog.Builder(CreateCampaign.this);
+                popup.setTitle("Introducir valor");
+                EditText editText = new EditText(CreateCampaign.this);
+                popup.setView(editText);
+                popup.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String valorIntroducido = editText.getText().toString();
+                        // Realiza las acciones necesarias con el valor introducido
+                        // ...
+                    }
+                });
             }
-        });*/
+        });
     }
     public void OnBackPressed(){
         if(cCampaign.isDrawerOpen(GravityCompat.START)) cCampaign.openDrawer(GravityCompat.END);
@@ -77,10 +139,6 @@ public class CreateCampaign  extends AppCompatActivity {
         }
         else if(id_item==R.id.crear_personaje){
             cambio= new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
-            startActivity(cambio);
-        }
-        else if(id_item==R.id.editar_personaje){
-            cambio= new Intent(findViewById(R.id.editar_personaje).getContext(), CreateCampaign.class);
             startActivity(cambio);
         }
         else{

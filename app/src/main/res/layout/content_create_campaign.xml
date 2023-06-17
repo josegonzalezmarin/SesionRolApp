@@ -47,13 +47,17 @@
                 android:importantForAutofill="no"
                 android:inputType="textPersonName" />
         </LinearLayout>
+        <ListView
+            android:id="@+id/jugadoresAniadidos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/newhero"
+            android:id="@+id/newplayer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:text="Añadir Personaje"/>
+            android:text="Añadir Jugador"/>
     </LinearLayout>
 
 
