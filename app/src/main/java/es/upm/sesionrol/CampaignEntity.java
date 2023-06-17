@@ -26,6 +26,14 @@ public class CampaignEntity {
         this.jugadores = j;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getImg() {
+        return img;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

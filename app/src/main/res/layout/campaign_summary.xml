@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/imagencamp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@color/gris_letras"
+        android:contentDescription="@string/prof_img"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        android:src="@drawable/baseline_person_24" />
+
+    <TextView
+        android:id="@+id/textnombId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/imagencamp"
+        android:text="Nombre" />
+
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_toEndOf="@+id/textnombId"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/textnombMaster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/imagencamp"
+        android:layout_below="@+id/textnombId"
+        android:text="Master:" />
+
+    <TextView
+        android:id="@+id/nameMasterView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_toRightOf="@+id/imagencamp"
+        android:layout_below="@+id/textnombId"
+        android:text="" />
+
+
+
+
+
+</RelativeLayout>
