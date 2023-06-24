@@ -1,6 +1,8 @@
 package es.upm.sesionrol;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -23,6 +26,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +42,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,10 +75,12 @@ import okhttp3.OkHttpClient;
 public class CreateCharacter extends AppCompatActivity {
     private DrawerLayout cCharacter;
 
-    Spinner raceSpinner;
-    Spinner classSpinner;
-    Spinner aligmSpinner;
-    Spinner backgSpinner;
+    private FirebaseAuth aut;
+    private FirebaseUser act;
+    private Spinner raceSpinner;
+    private Spinner classSpinner;
+    private Spinner aligmSpinner;
+    private Spinner backgSpinner;
     private List<ObjectResult> totalClases;
     private List<ObjectResult> totalRaces;
     private List<ObjectResult> totalAligm;
@@ -90,15 +99,22 @@ public class CreateCharacter extends AppCompatActivity {
     ImageView image;
     StorageReference stref;
     String storage_path = "profilepic/*";
+    private static final int COD_SEL_IMAGE =300;
+
+    private Uri image_url;
+    private String photo = "photo";
+
+
 
     DatabaseReference dbreff;
-    private FirebaseFirestore db;
+    private FirebaseFirestore mFirestore;
     private CollectionReference personajesRef;
     private Button savebt;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_character);
+
 
         raceSpinner = findViewById(R.id.race_spinner);
         classSpinner = findViewById(R.id.class_spinner);
@@ -109,6 +125,8 @@ public class CreateCharacter extends AppCompatActivity {
         totalRaces = new ArrayList<>();
         totalAligm = new ArrayList<>();
         totalBackg = new ArrayList<>();
+        FirebaseAuth aut = FirebaseAuth.getInstance();
+        FirebaseUser act = aut.getCurrentUser();
 
 
 
@@ -131,6 +149,7 @@ public class CreateCharacter extends AppCompatActivity {
 
 
         savebt = findViewById(R.id.saveC);
+
 
 
 
@@ -219,13 +238,21 @@ public class CreateCharacter extends AppCompatActivity {
 
         stref = FirebaseStorage.getInstance().getReference();
 
-        db = FirebaseFirestore.getInstance();
+        image = findViewById(R.id.imageProf);
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadPhoto();
+            }
+        });
+
+        mFirestore = FirebaseFirestore.getInstance();
 
 
         dbreff = FirebaseDatabase.getInstance().getReference("User");
 
-        FirebaseAuth aut = FirebaseAuth.getInstance();
-        FirebaseUser act = aut.getCurrentUser();
+
 
 
         dbreff.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -310,13 +337,18 @@ public class CreateCharacter extends AppCompatActivity {
                 EditText pers = findViewById(R.id.perstxt);
 
 
+
                 if (names.isEmpty() || lvls == "" || exper == "" || strs == "" || dexs == "" || conss == "" || ints == "" || wisds == "" || chars == "")
                     Toast.makeText(CreateCharacter.this, "Campos obligatorios sin rellenar", Toast.LENGTH_SHORT).show();
                 else {
 
-                    PersonajeEntity insertarp = new PersonajeEntity(names, raceSpinner.getSelectedItem().toString().trim(), classSpinner.getSelectedItem().toString().trim(), Integer.valueOf(lvls), Integer.valueOf(strs), Integer.valueOf(dexs), Integer.valueOf(conss), Integer.valueOf(ints), Integer.valueOf(wisds), Integer.valueOf(chars));
+                    ObjectResult race = (ObjectResult) raceSpinner.getSelectedItem();
+
+                    PersonajeEntity insertarp = new PersonajeEntity(names, race.getName(), classSpinner.getSelectedItem().toString().trim(), Integer.valueOf(lvls), Integer.valueOf(strs), Integer.valueOf(dexs), Integer.valueOf(conss), Integer.valueOf(ints), Integer.valueOf(wisds), Integer.valueOf(chars));
 
 
+
+                    insertarp.setImage(image_url.toString());
                     insertarp.setCompetences(comp.getText().toString());
                     insertarp.setBond(bond.getText().toString());
                     insertarp.setEquipment(equip.getText().toString());
@@ -328,7 +360,7 @@ public class CreateCharacter extends AppCompatActivity {
                     insertarp.setAligm(aligmSpinner.getSelectedItem().toString());
 
 
-                    Map<String, Object> personajeData = new HashMap<>();
+                    /*Map<String, Object> personajeData = new HashMap<>();
                     personajeData.put("name", names);
                     personajeData.put("lvl", Integer.valueOf(lvls));
                     personajeData.put("dndclass", classSpinner.getSelectedItem().toString());
@@ -348,9 +380,10 @@ public class CreateCharacter extends AppCompatActivity {
                     personajeData.put("bond", bond.getText().toString());
                     personajeData.put("feature", feat.getText().toString());
                     personajeData.put("personality", pers.getText().toString());
-                    personajeData.put("flaws", flaw.getText().toString());
+                    personajeData.put("flaws", flaw.getText().toString());*/
 
 
+                    subirPhoto(image_url);
                     Query query = dbreff.orderByChild("mail").equalTo(act.getEmail());
 
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -374,6 +407,7 @@ public class CreateCharacter extends AppCompatActivity {
                     });
 
 
+
                     Toast.makeText(getApplicationContext(), "Se ha enviado los datos", Toast.LENGTH_LONG).show();
 
                 }
@@ -383,24 +417,24 @@ public class CreateCharacter extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 String selectedback = parent.getItemAtPosition(pos).toString();
-                //TODO sacar info de la api
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // TODO sacar info de la api
+
             }
         });
         aligmSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 String selectedaligm = parent.getItemAtPosition(pos).toString();
-                //TODO sacar info de la api
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // TODO sacar info de la api
+
             }
         });
 
@@ -408,24 +442,24 @@ public class CreateCharacter extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 String selectedclass = parent.getItemAtPosition(pos).toString();
-                //TODO sacar info de la api
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // TODO sacar info de la api
+
             }
         });
         raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 String selectedRace = parent.getItemAtPosition(pos).toString();
-                //TODO sacar info de la api
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // TODO sacar info de la api
+
             }
         });
     }
@@ -437,15 +471,9 @@ public class CreateCharacter extends AppCompatActivity {
     }
 
 
-    public void onImageButtonClick(View view) {
-        Intent i = new Intent(Intent.ACTION_PICK);
-        i.setType("image/");
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+
+
 
     public void switchLayout(int id_item) {
         Intent cambio;
@@ -659,6 +687,34 @@ public class CreateCharacter extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
+    public void uploadPhoto(){
+        Intent i = new Intent(Intent.ACTION_PICK);
+        i.setType("image/*");
+        startActivityForResult(i,COD_SEL_IMAGE);
+    }
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,@Nullable Intent data) {
+        Log.d("image_url", "requestCode - RESULT_OK: "+requestCode+" "+RESULT_OK);
+        if(resultCode == RESULT_OK &&requestCode==COD_SEL_IMAGE){
+                image_url=data.getData();
+                Picasso.with(this).load(image_url).into(image);
+            }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    private void subirPhoto(Uri image_url){
+        aut = FirebaseAuth.getInstance();
+        String rute_storage = storage_path +"_"+photo+"_"+aut.getUid();
+        StorageReference storeRef = stref.child(rute_storage);
+        storeRef.putFile(image_url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(CreateCharacter.this, "Foto insertada correctamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
 
     }

@@ -15,7 +15,7 @@ public class PersonajeEntity implements Serializable {
     private String race;
 
     private String dndclass;
-    private int image;
+    private String image;
 
 
     private int lvl;
@@ -60,11 +60,11 @@ public class PersonajeEntity implements Serializable {
     }
 
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
