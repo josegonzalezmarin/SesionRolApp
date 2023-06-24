@@ -68,7 +68,6 @@
             <Spinner android:id="@+id/race_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/dnd_races"
                 android:textAlignment="textStart"
                 android:layout_weight="3"
                 xmlns:android="http://schemas.android.com/apk/res/android" />
@@ -92,7 +91,6 @@
             <Spinner android:id="@+id/class_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/dnd_classes"
                 android:textAlignment="textStart"
                 android:layout_weight="3"
                 xmlns:android="http://schemas.android.com/apk/res/android" />
@@ -156,7 +154,6 @@
             <Spinner android:id="@+id/aligment_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/dnd_aligment"
                 android:textAlignment="textStart"
                 android:layout_weight="3"
                 xmlns:android="http://schemas.android.com/apk/res/android" />
@@ -179,7 +176,6 @@
             <Spinner android:id="@+id/background_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/dnd_background"
                 android:textAlignment="textStart"
                 android:layout_weight="3"
                 xmlns:android="http://schemas.android.com/apk/res/android" />

@@ -38,15 +38,15 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
 
 
     private Context context;
-    private List<PersonajeEntity> listaPersonajes;
+    private List<PersonajeEntity> listaPer;
     private int resourceLayout;
 
 
-    public PersonajeListAdapter(@NonNull Context context,int resource, List<PersonajeEntity> listaPersonajes) {
-        super(context, resource, listaPersonajes);
+    public PersonajeListAdapter(@NonNull Context context,int resource, List<PersonajeEntity> listaPer) {
+        super(context, resource, listaPer);
         this.context = context;
         this.resourceLayout = resource;
-        this.listaPersonajes = listaPersonajes;
+        this.listaPer = listaPer;
     }
     @NonNull
     @Override
@@ -58,26 +58,28 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
             view = LayoutInflater.from(context).inflate(resourceLayout,null);
         }
 
+        PersonajeEntity personaje = (PersonajeEntity) listaPer.get(position);
 
-        PersonajeEntity personaje = listaPersonajes.get(position);
+            ImageView imagen = view.findViewById(R.id.imagenperf);
+            imagen.setImageResource(personaje.getImage());
 
-        ImageView imagen = view.findViewById(R.id.imagenperf);
-        imagen.setImageResource(personaje.getImage());
+            TextView tvName = view.findViewById(R.id.nameView);
+            tvName.setText(personaje.getName());
 
-        TextView tvName = view.findViewById(R.id.nameView);
-        tvName.setText(personaje.getName());
+            TextView tvClass = view.findViewById(R.id.classView);
+            tvClass.setText(personaje.getDndclass());
 
-        TextView tvClass = view.findViewById(R.id.classView);
-        tvClass.setText(personaje.getDndclass());
+            TextView tvRace = view.findViewById(R.id.raceView);
+            tvRace.setText(personaje.getRace());
 
-        TextView tvRace = view.findViewById(R.id.raceView);
-        tvRace.setText(personaje.getRace());
+            TextView tvExp = view.findViewById(R.id.expView);
+            tvExp.setText(personaje.getExp()+"");
 
-        TextView tvExp = view.findViewById(R.id.expView);
-        tvExp.setText(personaje.getExp()+"");
+            TextView tvLvl = view.findViewById(R.id.lvlView);
+            tvLvl.setText(personaje.getLvl()+"");
 
-        TextView tvLvl = view.findViewById(R.id.lvlView);
-        tvLvl.setText(personaje.getLvl()+"");
+
+
 
 
 

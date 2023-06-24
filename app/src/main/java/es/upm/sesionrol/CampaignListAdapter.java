@@ -57,14 +57,14 @@ public class CampaignListAdapter extends ArrayAdapter<CampaignEntity> {
             view = LayoutInflater.from(context).inflate(resourceLayout,null);
         }
 
-
-        CampaignEntity campana = listacampanas.get(position);
-
+        CampaignEntity cam = listacampanas.get(position);
         ImageView imagen = view.findViewById(R.id.imagenperf);
-        imagen.setImageResource(campana.getImg());
+        imagen.setImageResource(cam.getImg());
 
         TextView tvName = view.findViewById(R.id.nameView);
-        tvName.setText(campana.getName());
+        tvName.setText(cam.getName());
+
+
 
 
 
