@@ -2,16 +2,22 @@ package es.upm.sesionrol;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +27,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +36,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,9 +48,20 @@ import java.util.List;
 public class CreateCampaign extends AppCompatActivity {
     private DrawerLayout cCampaign;
 
+    private ImageView image;
+    private StorageReference stref;
+    private String storage_path = "profilepic/*";
+    private static final int COD_SEL_IMAGE = 300;
+
+    private Uri image_url;
+    private String photo = "photo";
+
     private Button newPlayer;
+    private Button saveCamp;
+    private FirebaseAuth aut;
+    private FirebaseUser act;
     private DatabaseReference dbreff;
-    private ListView listView;
+    private TextView textV;
     private CampaignListAdapter persAdapter;
     private List<CampaignEntity> campanas;
 
@@ -49,11 +70,13 @@ public class CreateCampaign extends AppCompatActivity {
         setContentView(R.layout.create_campaign);
 
 
-        listView = findViewById(R.id.jugadoresAniadidos);
+        textV = findViewById(R.id.jugadoresAniadidos);
+        saveCamp = findViewById(R.id.saveCamp);
+        image = findViewById(R.id.campPic);
 
         FirebaseAuth aut = FirebaseAuth.getInstance();
         FirebaseUser act = aut.getCurrentUser();
-        listView.setOnItemClickListener((AdapterView.OnItemClickListener) this);
+        //listView.setOnItemClickListener((AdapterView.OnItemClickListener) this);
         dbreff = FirebaseDatabase.getInstance().getReference("User");
 
         dbreff.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,7 +100,7 @@ public class CreateCampaign extends AppCompatActivity {
 
 
                         persAdapter = new CampaignListAdapter(CreateCampaign.this, R.layout.campaign_summary, campanas);
-                        listView.setAdapter(persAdapter);
+                        //listView.setAdapter(persAdapter);
                     }
 
                 }
@@ -139,6 +162,26 @@ public class CreateCampaign extends AppCompatActivity {
                 });
             }
         });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadPhoto();
+            }
+        });
+
+        saveCamp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<String> jug = new ArrayList<>();
+                CampaignEntity insertarc = new CampaignEntity("", "", jug);
+                if (image_url != null) {
+                    subirPhoto(image_url, insertarc.getName());
+                }
+
+            }
+        });
+
     }
 
     public void OnBackPressed() {
@@ -165,6 +208,35 @@ public class CreateCampaign extends AppCompatActivity {
         }
 
 
+    }
+
+    public void uploadPhoto() {
+        Intent i = new Intent(Intent.ACTION_PICK);
+        i.setType("image/*");
+        startActivityForResult(i, COD_SEL_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d("image_url", "requestCode - RESULT_OK: " + requestCode + " " + RESULT_OK);
+        if (resultCode == RESULT_OK && requestCode == COD_SEL_IMAGE) {
+            image_url = data.getData();
+            Picasso.with(this).load(image_url).into(image);
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void subirPhoto(Uri image_url, String name) {
+        aut = FirebaseAuth.getInstance();
+        String rute_storage = storage_path + "_" + photo + "_" + aut.getUid() + "_" + name;
+        StorageReference storeRef = stref.child(rute_storage);
+        storeRef.putFile(image_url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(CreateCampaign.this, "Foto insertada correctamente", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 

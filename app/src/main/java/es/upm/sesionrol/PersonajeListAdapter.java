@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,12 +80,13 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
             view = LayoutInflater.from(context).inflate(resourceLayout,null);
         }
 
+        PersonajeEntity personaje = (PersonajeEntity) listaPer.get(position);
         userA = FirebaseAuth.getInstance();
         user = userA.getCurrentUser();
-        String imagen ="*_photo_"+user.getUid();
+        String imagen ="*_photo_"+user.getUid()+"_"+personaje.getName();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference().child("profilepic/"+imagen);
-        PersonajeEntity personaje = (PersonajeEntity) listaPer.get(position);
+
         ImageView imagenV = view.findViewById(R.id.imagenperf);
 
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -97,12 +99,11 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Ocurrió un error al descargar la URL de la imagen
+                Log.d("Missing image","No tiene imagen asociada");
             }
         });
 
 
-            //imagen.setImageResource(personaje.getImage());
 
             TextView tvName = view.findViewById(R.id.nameView);
             tvName.setText(personaje.getName());
@@ -114,7 +115,11 @@ public class PersonajeListAdapter extends ArrayAdapter<PersonajeEntity> {
             tvRace.setText(personaje.getRace());
 
             TextView tvExp = view.findViewById(R.id.expView);
-            tvExp.setText(personaje.getExp()+"");
+            if(personaje.getExp()==null){
+                tvExp.setText("0");
+            }else {
+                tvExp.setText(personaje.getExp() + "");
+            }
 
             TextView tvLvl = view.findViewById(R.id.lvlView);
             tvLvl.setText(personaje.getLvl()+"");

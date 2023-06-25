@@ -14,12 +14,12 @@ public class CampaignEntity {
 
     private String name;
 
-    private int img;
+    private String img;
 
     private List<String> jugadores;
 
     public CampaignEntity() {}
-    public CampaignEntity(String name, int img, List<String> j) {
+    public CampaignEntity(String name, String img, List<String> j) {
         this.name = name;
         this.img = img;
         j = new ArrayList<>();
@@ -30,7 +30,7 @@ public class CampaignEntity {
         return name;
     }
 
-    public int getImg() {
+    public String getImg() {
         return img;
     }
 
@@ -38,7 +38,7 @@ public class CampaignEntity {
         this.name = name;
     }
 
-    public void setImg(int img) {
+    public void setImg(String img) {
         this.img = img;
     }
 

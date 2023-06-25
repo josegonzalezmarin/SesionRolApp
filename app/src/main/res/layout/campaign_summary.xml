@@ -35,9 +35,12 @@
         android:id="@+id/textnombMaster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_toRightOf="@+id/imagencamp"
         android:layout_below="@+id/textnombId"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toRightOf="@+id/imagencamp"
         android:text="Master:" />
 
     <TextView
@@ -48,6 +51,29 @@
         android:layout_toRightOf="@+id/imagencamp"
         android:layout_below="@+id/textnombId"
         android:text="" />
+
+    <TextView
+        android:id="@+id/textnombJugadores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameMasterView"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toRightOf="@+id/imagencamp"
+        android:text="Jugadores: " />
+
+    <TextView
+        android:id="@+id/listadoJugadores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/textnombJugadores"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/nameMasterView"/>
 
 
 

@@ -86,14 +86,9 @@ public class CreateCharacter extends AppCompatActivity {
     private List<ObjectResult> totalAligm;
     private List<ObjectResult> totalBackg;
 
-    private RequestAnswer respuesta;
 
-    private List<String> insertadasClasses = new ArrayList<>();
 
-    private MenuItem crearcampana;
-    private ListView listView;
-    private PersonajeListAdapter personajeAdapter;
-    private List<PersonajeEntity> listaPersonajes;
+
     private DataSnapshot ainsertar;
 
     ImageView image;
@@ -343,12 +338,18 @@ public class CreateCharacter extends AppCompatActivity {
                 else {
 
                     ObjectResult race = (ObjectResult) raceSpinner.getSelectedItem();
+                    ObjectResult clas = (ObjectResult) classSpinner.getSelectedItem();
+                    ObjectResult bac = (ObjectResult) backgSpinner.getSelectedItem();
+                    ObjectResult ali = (ObjectResult) aligmSpinner.getSelectedItem();
 
-                    PersonajeEntity insertarp = new PersonajeEntity(names, race.getName(), classSpinner.getSelectedItem().toString().trim(), Integer.valueOf(lvls), Integer.valueOf(strs), Integer.valueOf(dexs), Integer.valueOf(conss), Integer.valueOf(ints), Integer.valueOf(wisds), Integer.valueOf(chars));
+                    Log.d("Aqui",race.getName()+bac.getName()+ali.getName()+clas.getName());
+                    PersonajeEntity insertarp = new PersonajeEntity(names, race.getName(), clas.getName(), Integer.valueOf(lvls), Integer.valueOf(strs), Integer.valueOf(dexs), Integer.valueOf(conss), Integer.valueOf(ints), Integer.valueOf(wisds), Integer.valueOf(chars));
 
 
 
-                    insertarp.setImage(image_url.toString());
+                    if(image_url!=null) {
+                        insertarp.setImage(image_url.toString());
+                    }
                     insertarp.setCompetences(comp.getText().toString());
                     insertarp.setBond(bond.getText().toString());
                     insertarp.setEquipment(equip.getText().toString());
@@ -356,8 +357,8 @@ public class CreateCharacter extends AppCompatActivity {
                     insertarp.setFeature(feat.getText().toString());
                     insertarp.setFlaws(flaw.getText().toString());
                     insertarp.setPersonality(pers.getText().toString());
-                    insertarp.setBackg(backgSpinner.getSelectedItem().toString());
-                    insertarp.setAligm(aligmSpinner.getSelectedItem().toString());
+                    insertarp.setBackg(bac.getName());
+                    insertarp.setAligm(ali.getName());
 
 
                     /*Map<String, Object> personajeData = new HashMap<>();
@@ -383,7 +384,9 @@ public class CreateCharacter extends AppCompatActivity {
                     personajeData.put("flaws", flaw.getText().toString());*/
 
 
-                    subirPhoto(image_url);
+                    if(image_url!=null){
+                        subirPhoto(image_url,insertarp.getName());
+                    }
                     Query query = dbreff.orderByChild("mail").equalTo(act.getEmail());
 
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -702,9 +705,9 @@ public class CreateCharacter extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-    private void subirPhoto(Uri image_url){
+    private void subirPhoto(Uri image_url,String name){
         aut = FirebaseAuth.getInstance();
-        String rute_storage = storage_path +"_"+photo+"_"+aut.getUid();
+        String rute_storage = storage_path +"_"+photo+"_"+aut.getUid()+"_"+name;
         StorageReference storeRef = stref.child(rute_storage);
         storeRef.putFile(image_url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

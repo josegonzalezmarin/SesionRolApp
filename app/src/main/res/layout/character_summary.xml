@@ -20,7 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/imagenperf"
-        android:text="Nombre" />
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Nombre: " />
 
     <TextView
         android:id="@+id/nameView"
@@ -35,7 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textnombId"
         android:layout_toEndOf="@+id/imagenperf"
-        android:text="Raza" />
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Raza: " />
 
     <TextView
         android:id="@+id/raceView"
@@ -52,7 +56,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/raceView"
         android:layout_toEndOf="@+id/imagenperf"
-        android:text="Clase" />
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Clase: " />
 
     <TextView
         android:id="@+id/classView"
@@ -68,7 +74,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/classTextView"
         android:layout_toEndOf="@+id/imagenperf"
-        android:text="Nivel" />
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Nivel: " />
 
     <TextView
         android:id="@+id/lvlView"
@@ -84,7 +92,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/classTextView"
         android:layout_toRightOf="@+id/lvlView"
-        android:text="Exp." />
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Exp: " />
 
     <TextView
         android:id="@+id/expView"
