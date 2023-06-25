@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +29,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +38,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
@@ -48,9 +53,11 @@ import java.util.List;
 public class CreateCampaign extends AppCompatActivity {
     private DrawerLayout cCampaign;
 
+    private DataSnapshot ainsertar;
     private ImageView image;
+    private ListView camplistView;
     private StorageReference stref;
-    private String storage_path = "profilepic/*";
+    private String storage_path = "camppic/*";
     private static final int COD_SEL_IMAGE = 300;
 
     private Uri image_url;
@@ -62,7 +69,7 @@ public class CreateCampaign extends AppCompatActivity {
     private FirebaseUser act;
     private DatabaseReference dbreff;
     private TextView textV;
-    private CampaignListAdapter persAdapter;
+    private CampaignListAdapter campsAdapter;
     private List<CampaignEntity> campanas;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,50 +80,73 @@ public class CreateCampaign extends AppCompatActivity {
         textV = findViewById(R.id.jugadoresAniadidos);
         saveCamp = findViewById(R.id.saveCamp);
         image = findViewById(R.id.campPic);
+        stref = FirebaseStorage.getInstance().getReference();
 
         FirebaseAuth aut = FirebaseAuth.getInstance();
         FirebaseUser act = aut.getCurrentUser();
-        //listView.setOnItemClickListener((AdapterView.OnItemClickListener) this);
+
+        Intent intent = getIntent();
+
+        String nameg = intent.getStringExtra("name");
+        String master = intent.getStringExtra("master");
+        String jugs = intent.getStringExtra("jugadores");
+        if(master!=null) {
+            jugs += " " + master;
+        }
+        EditText name = findViewById(R.id.insertNameCamptxt);
+        TextView jug = findViewById(R.id.jugadoresAniadidos);
+
+
+        name.setText(nameg);
+        if(jugs!=null) {
+            jug.setText(jugs);
+        }
+        FirebaseAuth userA = FirebaseAuth.getInstance();
+        FirebaseUser user = userA.getCurrentUser();
+        String imagen ="*_photo_"+user.getUid()+"_"+nameg;
+        Log.d("Nombre ", imagen);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("profilepic/"+imagen);
+
+
+
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // La descarga de la URL de la imagen se completó con éxito
+                // Carga la imagen en el ImageView utilizando una biblioteca de manejo de imágenes
+                Picasso.with(CreateCampaign.this).load(uri).into(image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("Missing image","No tiene imagen asociada");
+            }
+        });
+
         dbreff = FirebaseDatabase.getInstance().getReference("User");
 
         dbreff.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    List<PersonajeEntity> listPer = new ArrayList<>();
-                    User actualusu = new User();
-                    CampaignEntity cam = new CampaignEntity();
-                    Gson gson = new Gson();
-                    Object email = snapshot.child("mail").getValue();
-                    if (act.getEmail().equals(email)) {
-                        for (DataSnapshot childSnapshot : snapshot.child("personaje").getChildren()) {
-                            HashMap<String, Object> data = (HashMap<String, Object>) childSnapshot.getValue();
-                            String json = gson.toJson(data);
-                            cam = gson.fromJson(json, CampaignEntity.class);
-                            campanas.add(cam);
+                    if (snapshot.getKey().equals("mail"))
+                        if (act.getEmail().equals(snapshot.getValue())) {
+                            ainsertar = snapshot;
+                            break;
                         }
-
-                        actualusu = new User((String) email, listPer, campanas);
-
-
-                        persAdapter = new CampaignListAdapter(CreateCampaign.this, R.layout.campaign_summary, campanas);
-                        //listView.setAdapter(persAdapter);
-                    }
-
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
-
         cCampaign = findViewById(R.id.createcampaign);
 
-        newPlayer =
-
-                findViewById(R.id.newplayer);
+        newPlayer = findViewById(R.id.newplayer);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationView navigation_view = findViewById(R.id.navigation_view);
@@ -148,20 +178,59 @@ public class CreateCampaign extends AppCompatActivity {
         newPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder popup = new AlertDialog.Builder(CreateCampaign.this);
-                popup.setTitle("Introducir valor");
-                EditText editText = new EditText(CreateCampaign.this);
-                popup.setView(editText);
-                popup.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String valorIntroducido = editText.getText().toString();
-                        // Realiza las acciones necesarias con el valor introducido
-                        // ...
-                    }
-                });
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateCampaign.this);
+
+                LayoutInflater inflater = getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.popup_layout, null);
+                builder.setView(dialogView);
+
+                AlertDialog alertDialog = builder.create();
+                EditText editText = dialogView.findViewById(R.id.emailinsertado);
+
+                Button addButton = dialogView.findViewById(R.id.insertarjugador);
+
+
+                alertDialog.show();
+
+
+                    addButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            String texto = editText.getText().toString();
+                            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("User");
+                            dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    boolean encontrado=false;
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        HashMap<String,String> m = (HashMap<String, String>) snapshot.getValue();
+                                        if(m.containsValue(texto)){
+                                            Log.d("Que",texto);
+                                            encontrado=true;
+                                            textV.append(texto + "\n");
+                                            break;
+                                        }
+                                    }
+                                    if(!encontrado)
+                                        Toast.makeText(CreateCampaign.this,"Inserta un email de un usuario registrado",Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    // El método onCancelled se ejecutará si ocurre algún error o se cancela la operación
+                                    Log.e("Error", "Error al obtener los datos: " + databaseError.getMessage());
+                                }
+                            });
+
+                            alertDialog.dismiss();
+                        }
+                    });
+
+
             }
         });
+
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,11 +242,48 @@ public class CreateCampaign extends AppCompatActivity {
         saveCamp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<String> jug = new ArrayList<>();
-                CampaignEntity insertarc = new CampaignEntity("", "", jug);
+
+                EditText name = findViewById(R.id.insertNameCamptxt);
+                String names = name.getText().toString().trim();
+                TextView player = findViewById(R.id.jugadoresAniadidos);
+                String players = player.getText().toString().trim();
+
+
+                CampaignEntity insertarc = new CampaignEntity(names,act.getEmail(), "", players);
+
+
+
+                Query query = dbreff.orderByChild("mail").equalTo(act.getEmail());
+                Log.d("El usuario es ",act.getEmail());
+
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                String clave = snapshot.getKey();
+                                DatabaseReference nodoEncontradoRef = dbreff.child(clave);
+                                String datos = act.getEmail().replace(".",",");
+
+                                nodoEncontradoRef.child("campanas").child(names + "_" + datos).setValue(insertarc);
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Ocurrió un error de lectura de la base de datos
+                    }
+                });
+
                 if (image_url != null) {
+                    insertarc.setImg(image_url.toString());
                     subirPhoto(image_url, insertarc.getName());
                 }
+
+
+                Toast.makeText(getApplicationContext(), "Se ha enviado los datos", Toast.LENGTH_LONG).show();
 
             }
         });

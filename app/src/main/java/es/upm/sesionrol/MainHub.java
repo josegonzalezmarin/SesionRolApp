@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.webkit.ValueCallback;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,10 +49,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainHub extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainHub extends AppCompatActivity  {
     private DrawerLayout mainhub;
+    private List<CampaignEntity> campanas = new ArrayList<>();
     private ListView listView;
+    private ListView camplistView;
     private PersonajeListAdapter persAdapter;
+    private CampaignListAdapter campsAdapter;
     private List<PersonajeEntity> personajes = new ArrayList<>();
 
     private DataSnapshot sactual;
@@ -66,11 +72,12 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
         setContentView(R.layout.main_hub);
 
         listView = findViewById(R.id.listadoFirebase);
+        camplistView = findViewById(R.id.listadoFirebaseC);
 
         FirebaseAuth aut = FirebaseAuth.getInstance();
         FirebaseUser act = aut.getCurrentUser();
 
-        listView.setOnItemClickListener(this);
+
 
         dbreff = FirebaseDatabase.getInstance().getReference("User");
 
@@ -79,9 +86,9 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    List<CampaignEntity> listCamp = new ArrayList<>();
                     User actualusu = new User();
                     PersonajeEntity p = new PersonajeEntity();
+                    CampaignEntity cam = new CampaignEntity();
                     Gson gson = new Gson();
                     Object email = snapshot.child("mail").getValue();
                     if (act.getEmail().equals(email)) {
@@ -91,10 +98,18 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
                              p = gson.fromJson(json,PersonajeEntity.class);
                             personajes.add(p);
                         }
+                        for (DataSnapshot childSnapshot : snapshot.child("campanas").getChildren()) {
+                            HashMap<String, Object> data = (HashMap<String, Object>) childSnapshot.getValue();
+                            String json = gson.toJson(data);
+                            cam = gson.fromJson(json, CampaignEntity.class);
+                            campanas.add(cam);
+                        }
 
-                        actualusu = new User((String) email,personajes,listCamp);
+                        actualusu = new User((String) email,personajes,campanas);
 
 
+                        campsAdapter = new CampaignListAdapter(MainHub.this, R.layout.campaign_summary, campanas);
+                        camplistView.setAdapter(campsAdapter);
                         persAdapter = new PersonajeListAdapter(MainHub.this, R.layout.character_summary, personajes);
                         listView.setAdapter(persAdapter);
                     }
@@ -137,36 +152,55 @@ public class MainHub extends AppCompatActivity implements AdapterView.OnItemClic
         });
 
 
-    }
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l){
-        Intent cambio = new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
-        PersonajeEntity p = personajes.get(position);
-        cambio.putExtra("name",p.getName());
-        cambio.putExtra("lvl",p.getLvl());
-        cambio.putExtra("dndclass",p.getDndclass());
-        cambio.putExtra("race",p.getRace());
-        cambio.putExtra("image",p.getImage());
-        cambio.putExtra("lvl",p.getLvl());
-        cambio.putExtra("exp",p.getExp());
-        cambio.putExtra("aligm",p.getAligm());
-        cambio.putExtra("backg",p.getBackg());
-        cambio.putExtra("str",p.getStr());
-        cambio.putExtra("dex",p.getDex());
-        cambio.putExtra("constit",p.getConstit());
-        cambio.putExtra("intel",p.getIntel());
-        cambio.putExtra("wisd",p.getWisd());
-        cambio.putExtra("charism",p.getCharism());
-        cambio.putExtra("competences",p.getCompetences());
-        cambio.putExtra("equipment",p.getEquipment());
-        cambio.putExtra("ideal",p.getIdeal());
-        cambio.putExtra("bond",p.getBond());
-        cambio.putExtra("feature",p.getFeature());
-        cambio.putExtra("personality",p.getPersonality());
-        cambio.putExtra("flaws",p.getFlaws());
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent cambio = new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
+                PersonajeEntity p = personajes.get(i);
+                cambio.putExtra("name", p.getName());
+                cambio.putExtra("lvl", p.getLvl());
+                cambio.putExtra("dndclass", p.getDndclass());
+                cambio.putExtra("race", p.getRace());
+                cambio.putExtra("image", p.getImage());
+                cambio.putExtra("lvl", p.getLvl());
+                cambio.putExtra("exp", p.getExp());
+                cambio.putExtra("aligm", p.getAligm());
+                cambio.putExtra("backg", p.getBackg());
+                cambio.putExtra("str", p.getStr());
+                cambio.putExtra("dex", p.getDex());
+                cambio.putExtra("constit", p.getConstit());
+                cambio.putExtra("intel", p.getIntel());
+                cambio.putExtra("wisd", p.getWisd());
+                cambio.putExtra("charism", p.getCharism());
+                cambio.putExtra("competences", p.getCompetences());
+                cambio.putExtra("equipment", p.getEquipment());
+                cambio.putExtra("ideal", p.getIdeal());
+                cambio.putExtra("bond", p.getBond());
+                cambio.putExtra("feature", p.getFeature());
+                cambio.putExtra("personality", p.getPersonality());
+                cambio.putExtra("flaws", p.getFlaws());
+                ImageView image = findViewById(R.id.imagenperf);
 
-        startActivity(cambio);
+
+
+                startActivity(cambio);
+            }
+        });
+
+        camplistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent cambio = new Intent(findViewById(R.id.crear_campana).getContext(),CreateCampaign.class);
+                CampaignEntity c = campanas.get(i);
+                cambio.putExtra("name",c.getName());
+                cambio.putExtra("master",c.getMaster());
+                cambio.putExtra("jugadores",c.getJugadores());
+                startActivity(cambio);
+            }
+        });
+
     }
+
     public void OnBackPressed() {
         if (mainhub.isDrawerOpen(GravityCompat.START)) mainhub.openDrawer(GravityCompat.END);
         else super.onBackPressed();

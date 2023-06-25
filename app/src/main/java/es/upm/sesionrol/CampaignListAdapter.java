@@ -76,20 +76,29 @@ public class CampaignListAdapter extends ArrayAdapter<CampaignEntity> {
         TextView tvName = view.findViewById(R.id.nameView);
         tvName.setText(cam.getName());
 
+        TextView tvJug = view.findViewById(R.id.textnombJugadores);
+        String insertarJ = cam.getJugadores().replace("\n"," ");
+        tvJug.setText(insertarJ);
+
+        TextView tvmaster = view.findViewById((R.id.master));
+        String insertarmaster= cam.getMaster();
+        tvmaster.setText(insertarmaster);
+
         userA = FirebaseAuth.getInstance();
         user = userA.getCurrentUser();
         String imagen ="*_photo_"+user.getUid()+"_"+cam.getName();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference().child("camppic/"+imagen);
 
-        ImageView imagenV = view.findViewById(R.id.imagenperf);
+        ImageView imagenV = view.findViewById(R.id.imagencamp);
 
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 // La descarga de la URL de la imagen se completó con éxito
                 // Carga la imagen en el ImageView utilizando una biblioteca de manejo de imágenes
-                Picasso.with(context).load(uri).into(imagenV);
+                if(imagenV!=null)
+                    Picasso.with(context).load(uri).into(imagenV);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

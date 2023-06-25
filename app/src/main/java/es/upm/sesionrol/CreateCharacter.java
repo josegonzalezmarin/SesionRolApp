@@ -2,6 +2,7 @@ package es.upm.sesionrol;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -122,6 +124,7 @@ public class CreateCharacter extends AppCompatActivity {
         totalBackg = new ArrayList<>();
         FirebaseAuth aut = FirebaseAuth.getInstance();
         FirebaseUser act = aut.getCurrentUser();
+        image = findViewById(R.id.imageProf);
 
 
 
@@ -189,6 +192,7 @@ public class CreateCharacter extends AppCompatActivity {
         EditText flaw = findViewById(R.id.flawstxt);
         EditText ideal = findViewById(R.id.idealtxt);
         EditText pers = findViewById(R.id.perstxt);
+
         if (race != null) {
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dnd_races, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -231,9 +235,32 @@ public class CreateCharacter extends AppCompatActivity {
         pers.setText(personalityg);
         flaw.setText(flawsg);
 
+        FirebaseAuth userA = FirebaseAuth.getInstance();
+        FirebaseUser user = userA.getCurrentUser();
+        String imagen ="*_photo_"+user.getUid()+"_"+nameg;
+        Log.d("Nombre ", imagen);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("profilepic/"+imagen);
+
+
+
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // La descarga de la URL de la imagen se completó con éxito
+                // Carga la imagen en el ImageView utilizando una biblioteca de manejo de imágenes
+                Picasso.with(CreateCharacter.this).load(uri).into(image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("Missing image","No tiene imagen asociada");
+            }
+        });
+
         stref = FirebaseStorage.getInstance().getReference();
 
-        image = findViewById(R.id.imageProf);
+
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -347,9 +374,7 @@ public class CreateCharacter extends AppCompatActivity {
 
 
 
-                    if(image_url!=null) {
-                        insertarp.setImage(image_url.toString());
-                    }
+
                     insertarp.setCompetences(comp.getText().toString());
                     insertarp.setBond(bond.getText().toString());
                     insertarp.setEquipment(equip.getText().toString());
@@ -361,30 +386,9 @@ public class CreateCharacter extends AppCompatActivity {
                     insertarp.setAligm(ali.getName());
 
 
-                    /*Map<String, Object> personajeData = new HashMap<>();
-                    personajeData.put("name", names);
-                    personajeData.put("lvl", Integer.valueOf(lvls));
-                    personajeData.put("dndclass", classSpinner.getSelectedItem().toString());
-                    personajeData.put("race", raceSpinner.getSelectedItem().toString());
-                    personajeData.put("exp", exper);
-                    personajeData.put("aligm", aligmSpinner.getSelectedItem().toString());
-                    personajeData.put("backg", backgSpinner.getSelectedItem().toString());
-                    personajeData.put("str", Integer.valueOf(strs));
-                    personajeData.put("dex", Integer.valueOf(dexs));
-                    personajeData.put("constit", Integer.valueOf(conss));
-                    personajeData.put("intel", Integer.valueOf(ints));
-                    personajeData.put("wisd", Integer.valueOf(wisds));
-                    personajeData.put("charism", Integer.valueOf(chars));
-                    personajeData.put("competences", comp.getText().toString());
-                    personajeData.put("equipment", equip.getText().toString());
-                    personajeData.put("ideal", ideal.getText().toString());
-                    personajeData.put("bond", bond.getText().toString());
-                    personajeData.put("feature", feat.getText().toString());
-                    personajeData.put("personality", pers.getText().toString());
-                    personajeData.put("flaws", flaw.getText().toString());*/
-
 
                     if(image_url!=null){
+                        insertarp.setImage(image_url.toString());
                         subirPhoto(image_url,insertarp.getName());
                     }
                     Query query = dbreff.orderByChild("mail").equalTo(act.getEmail());

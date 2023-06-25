@@ -16,14 +16,24 @@ public class CampaignEntity {
 
     private String img;
 
-    private List<String> jugadores;
+    private String master;
+
+    private String jugadores;
 
     public CampaignEntity() {}
-    public CampaignEntity(String name, String img, List<String> j) {
+    public CampaignEntity(String name, String master, String img, String j) {
         this.name = name;
         this.img = img;
-        j = new ArrayList<>();
         this.jugadores = j;
+        this.master = master;
+    }
+
+    public String getMaster() {
+        return master;
+    }
+
+    public void setMaster(String master) {
+        this.master = master;
     }
 
     public String getName() {
@@ -42,11 +52,11 @@ public class CampaignEntity {
         this.img = img;
     }
 
-    public List<String> getJugadores() {
+    public String getJugadores() {
         return jugadores;
     }
 
-    public void setJugadores(List<String> jugadores) {
+    public void setJugadores(String jugadores) {
         this.jugadores = jugadores;
     }
 
