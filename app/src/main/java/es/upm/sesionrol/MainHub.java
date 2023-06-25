@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainHub extends AppCompatActivity  {
+public class MainHub extends AppCompatActivity {
     private DrawerLayout mainhub;
     private List<CampaignEntity> campanas = new ArrayList<>();
     private ListView listView;
@@ -78,24 +78,24 @@ public class MainHub extends AppCompatActivity  {
         FirebaseUser act = aut.getCurrentUser();
 
 
-
         dbreff = FirebaseDatabase.getInstance().getReference("User");
 
 
         dbreff.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User actualusu = new User();
                     PersonajeEntity p = new PersonajeEntity();
-                    CampaignEntity cam = new CampaignEntity();
                     Gson gson = new Gson();
-                    Object email = snapshot.child("mail").getValue();
+                    CampaignEntity cam = new CampaignEntity();
+                    Object email;
+                    email = snapshot.child("mail").getValue();
                     if (act.getEmail().equals(email)) {
                         for (DataSnapshot childSnapshot : snapshot.child("personaje").getChildren()) {
                             HashMap<String, Object> data = (HashMap<String, Object>) childSnapshot.getValue();
                             String json = gson.toJson(data);
-                             p = gson.fromJson(json,PersonajeEntity.class);
+                            p = gson.fromJson(json, PersonajeEntity.class);
                             personajes.add(p);
                         }
                         for (DataSnapshot childSnapshot : snapshot.child("campanas").getChildren()) {
@@ -105,9 +105,6 @@ public class MainHub extends AppCompatActivity  {
                             campanas.add(cam);
                         }
 
-                        actualusu = new User((String) email,personajes,campanas);
-
-
                         campsAdapter = new CampaignListAdapter(MainHub.this, R.layout.campaign_summary, campanas);
                         camplistView.setAdapter(campsAdapter);
                         persAdapter = new PersonajeListAdapter(MainHub.this, R.layout.character_summary, personajes);
@@ -115,16 +112,15 @@ public class MainHub extends AppCompatActivity  {
                     }
 
                 }
+
             }
 
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("Fallo Base de datos","Ha habido un fallo al acceder");
+                Log.d("Fallo Base de datos", "Ha habido un fallo al acceder");
             }
         });
-
-
 
 
         mainhub = findViewById(R.id.main_hub);
@@ -137,7 +133,10 @@ public class MainHub extends AppCompatActivity  {
             @Override
             public void onDrawerClosed(View drawerView) {
                 MenuItem item = navigation_view.getCheckedItem();
-                if (item != null) cambiar_pantalla(item.getItemId());
+                if (item != null) {
+                    int id = item.getItemId();
+                    cambiar_pantalla(id);
+                }
             }
 
         };
@@ -182,7 +181,6 @@ public class MainHub extends AppCompatActivity  {
                 ImageView image = findViewById(R.id.imagenperf);
 
 
-
                 startActivity(cambio);
             }
         });
@@ -190,11 +188,11 @@ public class MainHub extends AppCompatActivity  {
         camplistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent cambio = new Intent(findViewById(R.id.crear_campana).getContext(),CreateCampaign.class);
+                Intent cambio = new Intent(findViewById(R.id.crear_campana).getContext(), CreateCampaign.class);
                 CampaignEntity c = campanas.get(i);
-                cambio.putExtra("name",c.getName());
-                cambio.putExtra("master",c.getMaster());
-                cambio.putExtra("jugadores",c.getJugadores());
+                cambio.putExtra("name", c.getName());
+                cambio.putExtra("master", c.getMaster());
+                cambio.putExtra("jugadores", c.getJugadores());
                 startActivity(cambio);
             }
         });
@@ -218,9 +216,11 @@ public class MainHub extends AppCompatActivity  {
         } else if (id_item == R.id.crear_personaje) {
             cambio = new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
-        } else {
-            cambio = new Intent(findViewById(R.id.activity_main).getContext(), MainActivity.class);
-            startActivity(cambio);
+        } else if (id_item == R.id.cerrar_sesion) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
         }
 
 

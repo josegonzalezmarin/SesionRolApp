@@ -90,7 +90,7 @@ public class CreateCampaign extends AppCompatActivity {
         String nameg = intent.getStringExtra("name");
         String master = intent.getStringExtra("master");
         String jugs = intent.getStringExtra("jugadores");
-        if(master!=null) {
+        if(master!=null && !jugs.contains(master)) {
             jugs += " " + master;
         }
         EditText name = findViewById(R.id.insertNameCamptxt);
@@ -103,7 +103,7 @@ public class CreateCampaign extends AppCompatActivity {
         }
         FirebaseAuth userA = FirebaseAuth.getInstance();
         FirebaseUser user = userA.getCurrentUser();
-        String imagen ="*_photo_"+user.getUid()+"_"+nameg;
+        String imagen ="*_photo_"+"_"+nameg;
         Log.d("Nombre ", imagen);
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference().child("profilepic/"+imagen);
@@ -276,6 +276,32 @@ public class CreateCampaign extends AppCompatActivity {
                         // Ocurrió un error de lectura de la base de datos
                     }
                 });
+                String[] array=players.split(" ");
+                for(int i=0;i<array.length;i++) {
+                    Query query2 = dbreff.orderByChild("mail").equalTo(array[i]);
+                    Log.d("El usuario es ", array[i]);
+
+                    query2.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String clave = snapshot.getKey();
+                                    DatabaseReference nodoEncontradoRef = dbreff.child(clave);
+                                    String datos = act.getEmail().replace(".", ",");
+
+                                    nodoEncontradoRef.child("campanas").child(names + "_" + datos).setValue(insertarc);
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Ocurrió un error de lectura de la base de datos
+                        }
+                    });
+                }
 
                 if (image_url != null) {
                     insertarc.setImg(image_url.toString());
@@ -309,8 +335,10 @@ public class CreateCampaign extends AppCompatActivity {
             cambio = new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
         } else {
-            cambio = new Intent(findViewById(R.id.crear_campana).getContext(), MainActivity.class);
-            startActivity(cambio);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
         }
 
 
@@ -335,7 +363,7 @@ public class CreateCampaign extends AppCompatActivity {
 
     private void subirPhoto(Uri image_url, String name) {
         aut = FirebaseAuth.getInstance();
-        String rute_storage = storage_path + "_" + photo + "_" + aut.getUid() + "_" + name;
+        String rute_storage = storage_path + "_" + photo  + "_" + name;
         StorageReference storeRef = stref.child(rute_storage);
         storeRef.putFile(image_url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

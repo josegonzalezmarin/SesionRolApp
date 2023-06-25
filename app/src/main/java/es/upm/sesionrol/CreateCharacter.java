@@ -494,8 +494,10 @@ public class CreateCharacter extends AppCompatActivity {
             cambio = new Intent(findViewById(R.id.crear_personaje).getContext(), CreateCharacter.class);
             startActivity(cambio);
         } else {
-            cambio = new Intent(findViewById(R.id.crear_campana).getContext(), MainActivity.class);
-            startActivity(cambio);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
         }
 
 

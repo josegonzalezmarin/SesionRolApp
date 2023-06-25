@@ -33,9 +33,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,17 +78,21 @@ public class CampaignListAdapter extends ArrayAdapter<CampaignEntity> {
         TextView tvName = view.findViewById(R.id.nameView);
         tvName.setText(cam.getName());
 
-        TextView tvJug = view.findViewById(R.id.textnombJugadores);
-        String insertarJ = cam.getJugadores().replace("\n"," ");
-        tvJug.setText(insertarJ);
-
         TextView tvmaster = view.findViewById((R.id.master));
         String insertarmaster= cam.getMaster();
         tvmaster.setText(insertarmaster);
 
+        TextView tvJug = view.findViewById(R.id.textnombJugadores);
+        String insertarJ = cam.getJugadores().replace("\n"," ");
+        tvJug.setText(insertarJ);
+
+
+
         userA = FirebaseAuth.getInstance();
+
         user = userA.getCurrentUser();
-        String imagen ="*_photo_"+user.getUid()+"_"+cam.getName();
+
+        String imagen ="*_photo_"+"_"+cam.getMaster();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference().child("camppic/"+imagen);
 

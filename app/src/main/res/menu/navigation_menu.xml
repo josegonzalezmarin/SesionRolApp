@@ -5,7 +5,7 @@
     tools:context=".MainHub"
     android:id="@+id/navigationmenu">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/principal"    android:title="Principal" android:icon="@drawable/common_google_signin_btn_icon_dark" />
+        <item android:id="@+id/principal"    android:title="Principal"/>
         <item android:id="@+id/crear_campana"   android:title="Crear Campaña" />
         <item android:id="@+id/crear_personaje"   android:title="Crear Personaje" />
         <item android:id="@+id/cerrar_sesion"   android:title="Cerrar sesion" />
